@@ -1,0 +1,3 @@
+/home/ren/SDL/SDL_Engine/build/CMakeFiles/rebuild_cache.dir
+/home/ren/SDL/SDL_Engine/build/CMakeFiles/SDL_Engine_shared.dir
+/home/ren/SDL/SDL_Engine/build/CMakeFiles/edit_cache.dir

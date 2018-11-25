@@ -1,0 +1,31 @@
+#get all files
+
+#add src path
+#VPATH = SDL_Engine:SDL_Engine/extensions:SDL_Engine/ui
+
+#get all source files
+SRCS := $(wildcard SDL_Engine/*.cpp) \
+	$(wildcard SDL_Engine/extensions/*.cpp) \
+	$(wildcard SDL_Engine/ui/*.cpp)
+
+OBJS := $(patsubst %.cpp,%.o,${SRCS})
+CXXFLAGS := `sdl2-config --cflags --libs` -fPIC -I /usr/include/SDL2 \
+	-I /usr/include/freetype2
+LIBS := -lz -L /usr/lib/x86_64-linux-gnu -lSDL2 -lSDL2_image -lSDL2_ttf -lSDL2_mixer -lSDL2_gfx \
+	`sdl2-config --libs`
+
+libSDL_Engine.a : ${OBJS}
+#g++ -shared -o $@ $^ ${LIBS}
+	ar cr $@ $^
+${OBJS} : %.o:%.cpp
+	g++ -c ${CXXFLAGS} $< -o $@ ${LIBS}
+
+.PHONY:clean
+clean:
+	rm -rf SDL_Engine/*.o
+	rm -rf SDL_Engine/extensions/*.o
+	rm -rf SDL_Engine/ui/*.o
+	rm -rf libSDL_Engine.a
+.PHONY:print
+print:
+	@echo ${OBJS}

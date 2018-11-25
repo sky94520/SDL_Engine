@@ -1,0 +1,78 @@
+ui基础属性
+1.组件类型 2.位置 3.缩放 4.锚点 5.tag 6.name 7.size
+				Layer
+注:需注明anchor-point为(0,0)
+				Sprite属性
+1.filename	会尝试Sprite::create和Sprite::createWithSpriteFrameName()两种
+2.rect
+
+				LabelTTF属性
+1.text
+2.font-size
+3.font-color
+4.font-path
+5.wrap-line
+				LabelAtlas属性
+1.text
+2.color-key
+3.filename
+4.item-width
+5.item-height
+6.start-char
+7.kerning
+				LabelDotChar
+1.text
+2.pxsize
+3.color
+				LabelBMFont
+1.text
+2.font-path
+3.width
+4.font-color
+5.opacity
+				LayerColor
+1.rect
+2.color
+				Button
+1.res-type LOCAL XML
+2.normal-image
+3.selected-image
+4.disabled-image
+				Xml
+	<Xml name="shop_player_life" anchor-point="0,0">
+		<properties>
+			<property name="filename" value="scene/ShopNode.xml"/>
+		</properties>
+	</Xml>
+	<loadingBar position="70,130" anchor-point="0.5,0.5" name="hp">
+		<properties>
+			<property name="filename" value="fm_s1.png"/>
+			<property name="res-type" value="XML"/>
+			<property name="percent" value="1"/>
+			<property name="dir" value="0"/>
+		</properties>
+	</loadingBar>
+2017-01-06
+添加了ui模块
+通过xml生成控件，目前仅支持Layer，Sprite，LabelTTF。计划在以后添加其他控件
+UIWidgetData 保存节点数据，不进行任何逻辑处理
+UIWidgetDataSetting 处理各种逻辑，主要用于对UIWidgetData进行赋值
+UIWidgetFactory 组件共产类，通过UIWidgetData来生产相应的组件并赋予属性
+UIWidgetManager 组件管理类 负责读取并产生组件
+UIWidgetSystem 负责产生组件的总类
+2017-01-26
+1.添加了Button按钮，
+2.添加了CheckBox控件
+
+2017-05-12
+1.fix 修正了Widget的setTouchEnable的问题
+
+2017-12-31
+1.add xml文件支持了Radio Button控件
+2.fix 更新了Sprite的xml支持，使之需要添加res-type属性
+
+2018-01-23
+1.add xml文件支持了LoadingBar控件
+
+2018-04-17
+1.add 添加了size字段的支持

@@ -1,0 +1,53 @@
+支持0.18以上版本
+若出现问题，可以另存为保存为最新格式
+
+
+添加了tmx 目前只支持base64和zlib
+1.需要base64(SDL_Engine已经集成)
+2.需要zlib
+方向为right-down
+有关类
+Tileset类 保存了相应的图块属性
+TMXLayer类
+TMXObjectGroupLayer 保存了对象层，仅仅保存了对象
+TMXTileMap
+
+2017-01-08
+1.add 在TMXObjectGroup类中添加了getObjects()函数
+2017-01-17
+1.add 增加了TMXTiledMap的相关函数
+2017-01-23
+1.add 增加了45度地图的支持
+2.fix TMX地图中的精灵锚点统一为(0.5,0.5)
+2017-01-31
+1.add 增加了对动画的支持
+2017-02-01
+1.fix 修复了getTileGIDAt()使之在超出tmx情况下返回0
+2017-02-03
+1.fix 修正了TMXTiledMap::getTilePropertiesForGID()函数，使之能正确返回
+
+2017-05-22
+1.fix 修正了getLayer()的返回问题
+
+2017-05-18
+1.fix 修正了TMXTiledMap对ImageLayer的读取，使之可以正常搜寻同文件夹内资源
+
+2017-05-23
+1.fix 修复了TMXTiledMap的资源的读取问题
+
+2017-05-27
+1.fix 修正了一部分bug，但效率不高
+
+2017-09-05
+1.add 添加了对tmx的tsx的支持
+
+2017-09-11
+1.fix 修复了瓦片动画的显示
+
+2-17-12-29
+1.add 在TMXTiledMap中添加了const std::vector<Tileset*>& getTilesets()const
+2.add 在Tileset中添加了const std::unordered_map<int,ValueMap>& getProperties()const
+
+2018-04-08
+1.fix Tileset的属性等改为public
+2.add TMXTiledMap添加重载函数bool getTilePropertiesForGID(int gid, ValueMap** value);

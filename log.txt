@@ -1,0 +1,310 @@
+2016-12-04
+Sprite::render()
+Node::getBoundingBox();没有增加对缩放的管理
+增加了对锚点控制渲染目标。锚点控制
+1.最终渲染位置
+2.getBoundingRect的位置
+3.增加了渲染级联
+2016-12-11
+bug Font::init()没有使用 FileUtils
+2016-12-12
+1.发现.mp3文件无法播放，转换格式后wav格式后可正确播放。不知道原因
+2016-12-14
+bug 1.修复了MenuItemSprite的锚点问题
+bug 2.Menu的点击问题（暂时未修复）
+2016-12-24
+fix 1.修复了Menu的点击问题(仅限MenuItemImage和MenuItemSprite)
+2016-12-29
+fix 1.修复了FileUtils在android下无法读取文件
+fix 2.修复了Touch的setTouchInfo，使之可以重置
+fix 3.修复了InputHandler使之在android下可以接收单点触碰事件
+fix 4.修复了Touch::isAvai
+2016-12-30
+fix 1.修复了Touch的重新使用 setTouchInfo 设置TouchStatus::TOUCH_NONE
+upd 2.更新了SpriteFrameCache的addSpriteFrameWithFile函数
+fix 3.修复了Director的帧率显示
+fix 4.修复了Menu的按键处理
+que 5.关于SoundManager的文件映射
+2017-01-02
+add 1.增加了EventTouchAllAtOnce
+add 2.增加了converToNodeSpace 和convertToWorldSpace(内部使用getWorldPosition()实现)
+
+2017-01-03
+add 1.增加了Font中对换行的支持
+2017-01-04(big)
+upd 1.更新了Sprite的创建函数命名规则
+fix 2.修复了LabelTTF，使之支持锚点和换行(内部使用SDL_Render*_Blended_Wrapped)
+fix 3.修复了缩放以及缩放级联  注：目前只有getBoundingBox()能获取缩放大小
+fix 4.修复了Node 的addChild(Node*child,int localZOrder,int tag)会覆盖原tag
+fix 5.修复了getBoundingBox()能获取到缩放后的位置和大小
+2017-01-05
+add 1.FileUtils增加了getDataFromFile()函数
+2017-01-06
+fix 1.显示的fps不会被遮住
+add 2.添加了ui模块
+upd 3.更新 每个类的#ifndef都有SDL前缀
+add 4.添加了TMX，目前仅仅支持一种
+fix 5.修正了tmx的Sprite的锚点
+add 6.TMXTiledMap 增加了getTileSize() 和getMapSize()
+2017-01-07
+add 1.TextureCache添加getTextureFilePath()
+fix 2.修正了SpriteFrameCache的addSpriteFramesWithFile()
+fix 3.修正了TMXTiledMap读取文件的路径问题
+2017-01-09
+fix 1.简单重写了LoadingBar,但大多数依旧无法使用setScale函数(不建议使用缩放函数)
+2017-01-15
+add 1.在FileUtils增加了getUniqueDataFromFile()，使用了c++11的新特性std::unique_ptr
+fix 2.修正了SpriteFrameCache中addSpriteFrameWithFile的内部实现
+2017-01-17
+add 1.增加了EventListenerKeyboardState内部是使用的是SDL_GetKeyboardState()实现，区别于EventListenerKeyboard
+bug 2.发现bug，当同时按下 ↖时无法接收到Space键，
+2017-01-18
+add 1.在FileUtils添加了getWritablePath()，可读写路径以及 org app的相关函数
+2017-01-19
+fix 1.修复了FileUtils getUniqueDataFromFile()，----关闭了SDL_RWops
+fix 2.修复了UserDefault的部分函数，使之跨平台----使用了SDL_RW*相关函数
+fix 3.修复了LabelTTF::create的使用歧义
+add 4.添加了TextureCache的addTexture函数，类似于addImage函数
+fix 5.更正了LabelAtlas，内部使用了Sprite，代替了原来的操作，原来的文件已经放入废弃文件夹中
+fix 6.更新了Director
+fix 7.修复了Color的构造函数Color(const SDL_Color&color)
+2017-01-20
+fix 1.修复了Sprite的setSpriteFrame函数，使之可响应锚点
+add 2.Node添加了getChildren()函数和pauseSchedulerAndActions() resumeSchedulerAndActions()
+add 3.在UIWidgetFactory的创建Sprite时会尝试Sprite::createWithSpriteFrameName()
+fix 4.修复了UserDefault的getValueForKey()
+upd 5.调整了main.cpp的单例类的释放，放到了Diector的end函数内
+2017-01-22
+fix 1.修正了Node::getChildBy*模板方法，内部使用了dynamic_cast
+upd 2.修改了几个单例类的purge为static方法，这样在删除时就不会再创建
+add 3.TMXTileMap类添加了对45度地图的支持
+fix 4.修正了90度地图和45度地图的精灵锚点问题，统一为(0.5,0.5)
+2017-01-23
+fix 1.修正了锚点问题，SDL旋转的锚点恒为图片中心
+2017-01-24
+upd 1.更新了LayerColor方法
+fix 2.修正了LabelAtlas的渲染方法
+2017-01-25
+add 1.添加了Button按钮,在ui命名空间内
+fix 2.修正了win下只能有一个touch
+add 3.添加了TouchListener
+
+2017-01-26
+add 1.集成了部分ui控件
+2017-01-27
+fix 1.修正了Vector的部分函数
+add 2.添加了单选按钮RadioButton 以及RadioButtonGroup
+2017-02-08
+fix 1.修复了SpriteFrameCache 添加资源时的original size问题
+2017-02-22
+fix 1.修正了removeActionByTag()的移除不成功问题
+2017-03-02
+fix 1.修正了TintTo不正常显示问题
+2017-03-03
+add 1.添加了Color3B 和Color4B,Color已经改为类名为Color4B
+2017-03-06
+1.fix 修正了Director的事件接收和分发函数的关于帧下降的问题。
+2017-03-16
+1.add 添加了Speed 动作类
+2017-03-19
+1.add 在Object类中添加getUniqueID()const;
+2017-03-22
+1.fix 修正了Sequence的startWithTarget第一个会重复开始两次的问题
+2017-03-23
+1.add 添加了LabelDotChar 
+2.fix 修正了帧数显示为LabelDotChar,至此本游戏引擎不需要额外的资源文件
+2017-03-26
+1.add 为Size Point Rect 添加了字符串构造函数
+2017-03-30
+1.add FileUtils 增加了getValueMapFromFile() 内部使用了递归
+2.add FileUtils 增加了getValueVectorFromFile() 内部使用了递归
+2017-04-01
+1.add 添加了ProgressTimer 目前条形和环形均实现
+2017-04-02
+1.fix 修复了 字符串构造Size Point Rect的函数，并移除了Point Size Rect的构造函数
+2.add 添加了SDLNS.h的字符串构造函数
+3.fix 修复了Value(double )和SDLNS.cpp FileUtils改为使用std::stoi std::stof()标准函数
+2017-04-04
+1.fix 修复了Sprite的渲染问题 destRect.y += int(d) - 1;//?
+2.add 增加了AnimationCache(内部是哈希表，保存Animation，这是因为Animation是通用的)
+3.add AnimationCache增加了addAnimationsWithFile()函数。
+目前仅仅实现了version1 (个人认为version2 麻烦)
+增加了2个可选标签loops 和 restoreOriginalFrame
+2017-04-05
+1.add 添加了BezierTo BezierBy
+2017-04-09
+1.add 添加了TMXImageLayer的支持以及每个图层都可以有properties
+2.upd 优化了StringUtils split的实现
+2017-04-11
+1.fix 修复了ProgressTimer的setRotation
+2.add Sprite添加了函数clone()
+3.fix 修复了旋转和锚点问题
+2017-04-17
+1.fix 修复了精灵的绘图，全部使用了_OriginalSize,
+2.add 为UIWidget添加了swallow表示是否吞并事件，默认如果点击成功，则吞并事件
+3.add Sequence添加了构造方法，create(vector<FiniteTimeAction*>&)
+2017-04-21
+1.add LabelAtla 增加了函数getInnerSprite()能获取内部的精灵
+
+2017-04-22
+1bug MoveBy只能先setPosition 然后runAction
+2017-04-23
+1.upd 更新了EventListenerTouchOneByOne,增加了变量保存了onTouchBegan()的返回值
+
+2017-04-26
+1.fix 修复了spriteFrameCache的createTexture的偏移位置问题，
+
+2017-05-03
+1.fix 修复了Sprite的渲染问题
+
+2017-05-04
+1.add Renderer添加了部分函数以及调整了形参和返回值
+
+2017-05-11
+1.fix 更改了plist的读取函数，使之解析效率高一些，但是还是无法和cocos2dx比较
+
+2017-05-12
+1.add增加了ActionEase的总共5个变速动画
+2.fix修正了EventListener的添加问题
+
+2017-05-14
+1.fix 修正了LabelAtlas的锚点问题(目前其他类似的实现同样存在此问题)
+2.add SoundManager添加了异步加载资源
+
+2017-05-18
+1.fix 修复了Sprite::initWithTexture()的texture设置问题
+2.fix 修复了TMXLayer setVisible关联外部文件
+
+2017-05-23
+1.add 为Animate添加了方法getNextFrameIndex()方法
+
+2017-05-26
+1.fix 对box的调试进行了更新
+
+2017-06-22
+1.添加了Animate 的
+unsigned int getNextFrameIndex()const{return _nextFrame;}
+Animation*getAnimation(){return _animation;}
+
+2017-07-07
+1.add 添加了SpriteFrame的_texturePackerRect来保存对应的小rect
+2.add 添加了Sprite的_spriteFrameRect 来保存具体的碰撞面积(慎用，如果不使用精灵表返回Rect::ZERO)
+
+2017-08-01
+1.add RectFromString等增加了一个char token，可以使用其他的分割字符串
+
+2017-09-21
+1.fix 修正了Sprite::setTexture()锚点问题
+
+2017-10-01
+1.add 增加了Scale9Sprite。
+
+2017-10-13
+1.add 添加了Menu的自动排序
+
+2017-01-13
+1.fix 修正了Rect 的方法为intersectRect(rect)
+
+2018-01-20 Animate目前能发送帧事件。
+1.add EventDispatcher 添加了addEventCustom(EventCustom*);
+2.add AnimationFrame 添加了DisplayedEventInfo结构体，便于帧数回调。 setUserInfo()和getUserInfo();
+3.add Animate::update添加了功能，发送帧事件。
+
+2018-02-05
+
+1.add FileUtils添加了writeValueMapToFile() 和 writeValueVectorToFile()到文件中
+2.fix 修正了Value 的asString()的布尔型返回值
+
+2018-02-21
+1.upd 更新了SDL的使用版本为2.07
+3.fix 修正了externs的函数的包含问题。
+
+2018-03-20
+1.fix 修正了Renderer的部分函数以及内部实现
+
+2018-04-02
+1.fix 修正了Color的函数：equals函数和getSDL_Color函数。
+2.fix 修正了Object的部分成员和autorelease函数
+3.upd 更新了AutoreleasePool的removeObject函数。
+4.upd 更新了PoolManager的部分成员
+5.upd 更新了Window，Surface，Texture Size，Rect Layer Scene
+6.upd 更新了Point的getSDL_Point函数，
+7.upd 更新了Director类中的部分成员和函数
+8.bug TextureCache的线程安全问题暂时没有解决，只是简单更新了下。
+
+2018-04-04
+1.fix 修正了Node::visit()函数的localZOrder绘制问题
+2.fix 更正了Node::sortAllChildren的排序改为标准库的stable_sort，即稳定排序。
+3.fix 修正了Node属性 _bCascadeScale 为_cascadeScale,函数render改为draw.
+4.upd 更新了Renderer类，引用了window以及添加了checkVisibility函数。
+5.upd 更新了Sprite
+
+2018-04-05
+1.add Node添加属性_globalZOrder可以跨层改变渲染顺序。
+2.upd Sprite更新了渲染时机，交给了Renderer中进行渲染，即渲染命令。
+3.upd Renderer添加了渲染命令以及渲染队列，在每次渲染前都会根据globalZOrder属性进行排序。
+4.add PlantformMarcos.h 添加了宏 #define USING_NS_SDL using namespace SDL
+5.add Director 添加了属性_renderCount,显示每帧绘制的次数。
+6.fix 修正了LabelDotChar的显示问题
+
+2018-04-10
+1.add unique_ptr<char> FileUtils::std::getUniqueDataFromFile(const std::string& filename, unsigned int* sz = nullptr);
+新增了一个字段，获取大小。
+
+2018-04-17
+1.upd 更新了UIWidgetFactory::createSprite()当filename为空时创建一个空的sprite，注意：要么setVisible(false),
+要么尽早setTexture();
+
+2018-04-19
+1.fix 修正了Node::setLocaZOrder()当没有父亲的报错问题。
+2.fix 修正了EventDispatcher::dispatchTouchEvent()函数的调用问题。
+3.add Node添加了透明级联以及相关的函数和成员。
+4.fix 修正了LabelTTF的级联问题。默认LabelTTF使用透明级联。
+
+2018-04-21
+1.add LabelTTF添加了Color修改，并且修改了内部实现，重载visit函数后，更新内部精灵改为懒惰更新。
+
+2018-05-07
+1.fix 修正了LoadingBar的显示问题
+2.fix 修正了Sprite 的缩放级联的问题(依旧没有使用矩阵)
+
+2018-05-10
+1.add 添加了FontCache
+2.fix 修正了LabelTTF
+
+2018-05-15
+1.fix 修正了EventListenerTouchAllAtOnce的宏问题
+
+2018-05-17
+1.add 添加了对LabelBMFont的支持和StringUtils的部分函数
+2.fix 修正了ui控件中的部分问题
+
+2018-05-20
+1.add Rect类添加了intersectRect的重载，返回相交矩形
+
+2018-05-23
+1.add Director导演类添加了getPlatform获取平台
+
+2018-05-29
+1.add SoundManager添加了两个布尔值来控制音乐和音效。
+
+2-18-07-06
+1.fix 修正了 TMX的图片偏移问题
+
+2018-09-04
+1.fix 修正了Value类因找不到memset()函数而报错
+
+2018-09-10
+1.fix 修正了StringUtils中的变量类型错误 不同平台下类型的大小导致的不同(string::npos size_t)
+2.fix 修正了Progressimer.h中找不到<SDL_gfx.h>的问题
+3.fix Color.h中的类继承问题
+4.fix BMFontConfiguration类采用默认fnt格式而非xml格式
+
+2018-09-11
+1.fix 所有源文件添加前缀SE
+2.fix 一系列printf改为LOG
+3.fix Surface Texture Renderer等的API问题
+
+2018-11-13
+1.fix 修正了事件层排序改为稳定排序
+2.fix LabelAtlas的setString问题
