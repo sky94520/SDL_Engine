@@ -33,6 +33,7 @@
 #include "SDL_Engine/SEEventCustom.h"
 #include "SDL_Engine/SEEventListenerAllAtOnce.h"
 #include "SDL_Engine/SEEventListenerKeyboardState.h"
+#include "SDL_Engine/SEEventListenerTextInput.h"
 
 #include "SDL_Engine/SETouch.h"
 #include "SDL_Engine/SEMenu.h"
