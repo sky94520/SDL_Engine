@@ -95,7 +95,9 @@ void LabelAtlas::setString(const std::string&text)
 	if(_text == text)
 		return;
 
-	if (text.empty())
+	_text = text;
+
+	if (strlen(text.c_str()) == 0)
 	{
 		if (_sprite != nullptr)
 			_sprite->setVisible(false);
@@ -105,7 +107,6 @@ void LabelAtlas::setString(const std::string&text)
 	{
 		_sprite->setVisible(true);
 	}
-	_text = text;
 	Renderer*renderer = Director::getInstance()->getRenderer();
 	Texture*texture = Director::getInstance()->getTextureCache()->getTextureForKey(_filePath);
 	//获取资源大小

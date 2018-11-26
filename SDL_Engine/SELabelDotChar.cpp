@@ -6,8 +6,8 @@
 
 NS_SDL_BEGIN
 LabelDotChar::LabelDotChar()
-	:_pxsize(0),_sprite(nullptr)
-	,_dirty(true)
+	:_pxsize(0)
+	,_sprite(nullptr)
 {
 }
 
@@ -37,7 +37,9 @@ void LabelDotChar::setString(const std::string&text)
 {
 	if(_text == text)
 		return;
-	if (text.empty())
+	_text = text;
+
+	if (strlen(text.c_str()) == 0)
 	{
 		if (_sprite != nullptr)
 			_sprite->setVisible(false);
@@ -50,31 +52,21 @@ void LabelDotChar::setString(const std::string&text)
 	//获取区域大小
 	Size size = this->getSizeByText(text);
 	Size oldSize = this->getContentSize();
-	//如果空间不够，则重新生成，反之则继续使用
-	if(size.width > oldSize.width || size.height > oldSize.height)
-		_dirty = true;
 
-	_text = text;
 	Renderer* renderer = Director::getInstance()->getRenderer();
 	Texture* bg = nullptr;
 
-	if(_dirty)
-	{
-		_dirty = false;
-		if(_sprite)
-			_sprite->removeFromParent();
+	if(_sprite != nullptr)
+		_sprite->removeFromParent();
 
-		_sprite = Sprite::createWithTexture(SDL_PIXELFORMAT_RGBA8888,SDL_TEXTUREACCESS_TARGET,(int)size.width,(int)size.height);
-		_sprite->setPosition(size.width / 2 , size.height / 2);
-		this->addChild(_sprite);
-		//重新设置大小
-		this->setContentSize(size);
-		
-		bg = _sprite->getTexture();
-		bg->setBlendMode(SDL_BLENDMODE_BLEND);
-	}
-	else
-		bg = _sprite->getTexture();
+	_sprite = Sprite::createWithTexture(SDL_PIXELFORMAT_RGBA8888,SDL_TEXTUREACCESS_TARGET,(int)size.width,(int)size.height);
+	_sprite->setPosition(size.width / 2 , size.height / 2);
+	this->addChild(_sprite);
+	//重新设置大小
+	this->setContentSize(size);
+	
+	bg = _sprite->getTexture();
+	bg->setBlendMode(SDL_BLENDMODE_BLEND);
 	//设置bg为当前渲染目标
 	SDL_BlendMode oldBlendMode = SDL_BLENDMODE_NONE;
 	renderer->getDrawBlendMode(&oldBlendMode);

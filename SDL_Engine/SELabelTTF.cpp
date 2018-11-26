@@ -108,10 +108,11 @@ std::string LabelTTF::getString() const
 
 void LabelTTF::updateInnerSprite()
 {
-	if (_text.empty())
+	if (strlen(_text.c_str()) == 0)
 	{
 		if (_sprite != nullptr)
 			_sprite->setVisible(false);
+		return ;
 	}
 	else if (_sprite != nullptr)
 	{

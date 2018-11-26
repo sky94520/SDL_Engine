@@ -1,6 +1,8 @@
 #ifndef __SDL_LabelAtlas_H__
 #define __SDL_LabelAtlas_H__
-#include<string>
+
+#include <string>
+#include <cstring>
 #include "SENode.h"
 #include "SETexture.h"
 #include "SELabel.h"
