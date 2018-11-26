@@ -12,7 +12,6 @@ LabelTTF::LabelTTF()
 	:_size(0)
 	,_wrapLine(0)
 	,_sprite(nullptr)
-	,_dirty(true)
 {
 	_cascadeOpacity = true;
 }
@@ -76,8 +75,7 @@ void LabelTTF::setWrapLine(Uint32 wrapLine)
 		return;
 
 	_wrapLine = wrapLine;
-
-	_dirty = true;
+	this->updateInnerSprite();
 }
 
 void LabelTTF::setColor(const Color4B& color)
@@ -85,7 +83,7 @@ void LabelTTF::setColor(const Color4B& color)
 	if (_color != color)
 	{
 		_color = color;
-		_dirty = true;
+		this->updateInnerSprite();
 	}
 }
 
@@ -100,7 +98,7 @@ void LabelTTF::setString(const std::string& text)
 		return;
 
 	_text = text;
-	_dirty = true;
+	this->updateInnerSprite();
 }
 
 std::string LabelTTF::getString() const
@@ -108,43 +106,48 @@ std::string LabelTTF::getString() const
 	return _text;
 }
 
-void LabelTTF::visit()
+void LabelTTF::updateInnerSprite()
 {
-	if (_dirty)
+	if (_text.empty())
 	{
-		Font* font = FontCache::getInstance()->getFont(_ttfPath, _size);
-
-		Surface* surface = nullptr;
-
-		_dirty = false;
-		//行不合法则不使用
-		if(_wrapLine <= 0)
-		{
-			surface = font->ttfRenderUTF8_Solid(_text.c_str(), _color);
-		}
-		else
-		{
-			surface = font->ttfRenderUTF8_Blended_Wrapped(_text.c_str(), _color, _wrapLine);
-		}
-		if(_sprite == nullptr)
-		{
-			_sprite = Sprite::createWithSurface(surface);
-			this->addChild(_sprite);
-		}
-		else
-		{
-			auto renderer = Director::getInstance()->getRenderer();
-			auto texture = Texture::createWithSurface(renderer, surface);
-			
-			_sprite->setTexture(texture);
-		}
-		//保存图片
-		//surface->savePNG(StringUtils::format("%d.png", _uniqueID).c_str());
-		//修改尺寸
-		Size size = _sprite->getContentSize();
-		this->setContentSize(size);
-		_sprite->setPosition(size.width / 2, size.height / 2);
+		if (_sprite != nullptr)
+			_sprite->setVisible(false);
 	}
-	Node::visit();
+	else if (_sprite != nullptr)
+	{
+		_sprite->setVisible(true);
+	}
+
+	Font* font = FontCache::getInstance()->getFont(_ttfPath, _size);
+	Surface* surface = nullptr;
+
+	//行数目不合法则不使用
+	if(_wrapLine <= 0)
+	{
+		surface = font->ttfRenderUTF8_Solid(_text.c_str(), _color);
+	}
+	else
+	{
+		surface = font->ttfRenderUTF8_Blended_Wrapped(_text.c_str(), _color, _wrapLine);
+	}
+	if(_sprite == nullptr)
+	{
+		_sprite = Sprite::createWithSurface(surface);
+		this->addChild(_sprite);
+	}
+	else
+	{
+		auto renderer = Director::getInstance()->getRenderer();
+		auto texture = Texture::createWithSurface(renderer, surface);
+		
+		_sprite->setTexture(texture);
+	}
+	//保存图片
+	//surface->savePNG(StringUtils::format("%d.png", _uniqueID).c_str());
+	//修改尺寸
+	Size size = _sprite->getContentSize();
+	this->setContentSize(size);
+	_sprite->setPosition(size.width / 2, size.height / 2);
 }
+
 NS_SDL_END

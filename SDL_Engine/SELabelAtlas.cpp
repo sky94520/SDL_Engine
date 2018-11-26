@@ -92,8 +92,19 @@ void LabelAtlas::draw()
 
 void LabelAtlas::setString(const std::string&text)
 {
-	if(_text == text || text.empty())
+	if(_text == text)
 		return;
+
+	if (text.empty())
+	{
+		if (_sprite != nullptr)
+			_sprite->setVisible(false);
+		return ;
+	}
+	else if (_sprite != nullptr)
+	{
+		_sprite->setVisible(true);
+	}
 	_text = text;
 	Renderer*renderer = Director::getInstance()->getRenderer();
 	Texture*texture = Director::getInstance()->getTextureCache()->getTextureForKey(_filePath);
@@ -152,14 +163,12 @@ void LabelAtlas::setString(const std::string&text)
 	renderer->setDrawColor(oldColor.r,oldColor.g,oldColor.b,oldColor.a);
 	renderer->setDrawBlendMode(oldBlendMode);
 }
-std::string LabelAtlas::getString()const
-{
-	return _text;
-}
+
 float LabelAtlas::getFontKerning()const
 {
 	return _fontKerning;
 }
+
 void LabelAtlas::setFontKerning(float kerning)
 {
 	if(_fontKerning != kerning)

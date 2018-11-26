@@ -3,10 +3,10 @@
 #include<string>
 #include "SENode.h"
 #include "SETexture.h"
-#include "SEProtocols.h"
+#include "SELabel.h"
 NS_SDL_BEGIN
 class Sprite;
-class LabelAtlas:public Node,LabelProtocol
+class LabelAtlas:public Label
 {
 private:
 	//图片的路径名字
@@ -16,8 +16,6 @@ private:
 	int _heightPerGlyph;
 	//起始字符
 	unsigned int _startChar;
-	//要显示的字符
-	std::string _text;
 	//设置字距，默认为1
 	float _fontKerning;
 	//显示的精灵
@@ -37,8 +35,7 @@ public:
 	bool initWithColorKey(const std::string&text,const std::string&charMapFile,unsigned int itemWidth,unsigned int itemHeight,const Color4B&color,unsigned int startChar=0);
 	//override
 	virtual void draw();
-	void setString(const std::string&label);
-	std::string getString()const;
+	virtual void setString(const std::string&label);
 	float getFontKerning()const;
 	/*设置字距，如果存在字体背景，可能会出现字块的重合
 	,这个函数会影响content size，请注意使用规范.废弃的，不建议使用*/

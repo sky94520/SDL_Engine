@@ -10,9 +10,11 @@ LabelDotChar::LabelDotChar()
 	,_dirty(true)
 {
 }
+
 LabelDotChar::~LabelDotChar()
 {
 }
+
 LabelDotChar*LabelDotChar::create(const std::string&text,unsigned int pxsize,const Color3B&color)
 {
 	auto label = new LabelDotChar();
@@ -22,6 +24,7 @@ LabelDotChar*LabelDotChar::create(const std::string&text,unsigned int pxsize,con
 		SDL_SAFE_DELETE(label);
 	return label;
 }
+
 bool LabelDotChar::init(const std::string&text,unsigned int pxsize,const Color3B&color)
 {
 	_pxsize = pxsize;
@@ -29,10 +32,21 @@ bool LabelDotChar::init(const std::string&text,unsigned int pxsize,const Color3B
 	this->setString(text);
 	return true;
 }
+
 void LabelDotChar::setString(const std::string&text)
 {
-	if(_text == text || text.empty())
+	if(_text == text)
 		return;
+	if (text.empty())
+	{
+		if (_sprite != nullptr)
+			_sprite->setVisible(false);
+		return ;
+	}
+	else if (_sprite != nullptr)
+	{
+		_sprite->setVisible(true);
+	}
 	//获取区域大小
 	Size size = this->getSizeByText(text);
 	Size oldSize = this->getContentSize();
@@ -81,16 +95,14 @@ void LabelDotChar::setString(const std::string&text)
 	renderer->setDrawColor(oldColor.r,oldColor.g,oldColor.b,oldColor.a);
 	renderer->setDrawBlendMode(oldBlendMode);
 }
-std::string LabelDotChar::getString()const
-{
-	return _text;
-}
+
 void LabelDotChar::draw()
 {
 	//留给Director的一个小小改变
 	if(_parent == nullptr)
 		_sprite->draw();
 }
+
 Size LabelDotChar::getSizeByText(const std::string&text)
 {
 	ValueVector vec = StringUtils::split(text,"\n");

@@ -3,16 +3,15 @@
 #include <string>
 #include "SENode.h"
 #include "SEColor.h"
-#include "SEProtocols.h"
+#include "SELabel.h"
 
 NS_SDL_BEGIN
 
 class BMFontConfiguration;
 
-class LabelBMFont : public Node, public LabelProtocol
+class LabelBMFont : public Label
 {
 private:
-	std::string _text;
 	BMFontConfiguration* _pConfiguration;
 	int _width;
 	Color3B _color;
@@ -30,7 +29,6 @@ public:
 	void setColor(const Color3B& color);
 
 	virtual void setString(const std::string& text);
-	virtual std::string getString() const;
 private:
 	//根据字符串和字体文件创建精灵
 	void createFontChars();

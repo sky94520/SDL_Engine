@@ -99,11 +99,6 @@ void LabelBMFont::setString(const std::string& text)
 	this->createFontChars();
 }
 
-std::string LabelBMFont::getString() const
-{
-	return _text;
-}
-
 void LabelBMFont::createFontChars()
 {
 	if (_text.empty())

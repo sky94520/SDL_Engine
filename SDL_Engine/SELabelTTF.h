@@ -4,20 +4,18 @@
 
 #include "SENode.h"
 #include "SEColor.h"
-#include "SEProtocols.h"
+#include "SELabel.h"
 NS_SDL_BEGIN
 class Sprite;
 /*内部保存了一个Sprite来进行渲染，不保存Font,每次setString时都会重新生成*/
-class LabelTTF:public Node,LabelProtocol
+class LabelTTF:public Label
 {
 private:
-	std::string _text;
 	std::string _ttfPath;//字体路径
 	int _size;//字体大小
 	Color4B _color;//字体颜色
 	Uint32 _wrapLine;//换行时每行的宽度
 	Sprite*_sprite;//进行渲染
-	bool _dirty;
 public:
 	LabelTTF();
 	~LabelTTF();
@@ -35,8 +33,8 @@ public:
 	//设置字符串，会重新生成
 	virtual void setString(const std::string&label);
 	virtual std::string getString()const;
-
-	virtual void visit();
+private:
+	void updateInnerSprite();
 };
 NS_SDL_END
 #endif

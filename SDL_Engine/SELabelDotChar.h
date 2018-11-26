@@ -7,13 +7,12 @@
 #include "SESize.h"
 #include "SEColor.h"
 #include "SESprite.h"
-#include "SEProtocols.h"
+#include "SELabel.h"
 
 NS_SDL_BEGIN
-class LabelDotChar:public Node,LabelProtocol
+class LabelDotChar:public Label
 {
 private:
-	std::string _text;
 	int _pxsize;//点阵的大小
 	Sprite*_sprite;
 	bool _dirty;
@@ -25,7 +24,6 @@ public:
 	bool init(const std::string&text,unsigned int pxsize,const Color3B&color);
 
 	virtual void setString(const std::string&label);
-	virtual std::string getString()const;
 	virtual void draw();
 private:
 	Size getSizeByText(const std::string&text);
