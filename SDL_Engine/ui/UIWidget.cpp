@@ -81,14 +81,15 @@ bool Widget::onTouchBegan(Touch*touch,SDL_Event*event)
 	if(hitTest(touch))
 	{
 		_shouldCallback = true;
-		this->touchBeganHook(touch,event);
+		bool ret = this->touchBeganHook(touch,event);
 
 		if(_touchCallback)
 		{
 			_touchCallback(this,TouchEventType::BEGAN);
 		}
 		
-		return 	_swallowTouches;
+		//只有都为true才吞并事件
+		return 	_swallowTouches && ret;
 	}
 
 	return false;

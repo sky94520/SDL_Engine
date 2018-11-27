@@ -308,3 +308,7 @@ Animation*getAnimation(){return _animation;}
 2018-11-13
 1.fix 修正了事件层排序改为稳定排序
 2.fix LabelAtlas的setString问题
+
+2018-11-27
+1.add UI添加了EditBox 不过目前仅仅适合输入简单字符 如英文、数字等。
+2.add 添加横版的Slider 暂未发现bug

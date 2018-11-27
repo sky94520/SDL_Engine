@@ -30,7 +30,7 @@ public:
 	virtual void setTouchEnabled(bool enable);
 	virtual Node* getVirtualRenderer();
 protected:
-	virtual void touchBeganHook(Touch*touch,SDL_Event*event);
+	virtual bool touchBeganHook(Touch*touch,SDL_Event*event);
 	virtual void touchMovedInHook(Touch*touch,SDL_Event*event);
 	virtual void touchMovedOutHook(Touch*touch,SDL_Event*event);
 	virtual void touchEndedHook(Touch*touch,SDL_Event*event);

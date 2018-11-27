@@ -146,9 +146,10 @@ Node* Button::getVirtualRenderer()
 	return nullptr;
 }
 
-void Button::touchBeganHook(Touch*touch,SDL_Event*event)
+bool Button::touchBeganHook(Touch*touch,SDL_Event*event)
 {
 	this->selected();
+	return true;
 }
 void Button::touchMovedInHook(Touch*touch,SDL_Event*event)
 {

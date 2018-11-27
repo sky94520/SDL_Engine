@@ -57,7 +57,7 @@ public:
 	virtual void onTouchCancelled(Touch*touch,SDL_Event*event);
 protected:
 	//hook
-	virtual void touchBeganHook(Touch*touch,SDL_Event*event){}
+	virtual bool touchBeganHook(Touch*touch,SDL_Event*event){ return true; }
 	virtual void touchMovedInHook(Touch*touch,SDL_Event*event){}
 	virtual void touchMovedOutHook(Touch*touch,SDL_Event*event){}
 	virtual void touchEndedHook(Touch*touch,SDL_Event*event){}

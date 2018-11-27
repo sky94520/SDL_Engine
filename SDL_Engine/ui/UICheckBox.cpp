@@ -39,10 +39,11 @@ void CheckBox::addEventListener(const ccCheckBoxCallback&callback)
 {
 	_checkBoxEventCallback = callback;
 }
-void CheckBox::touchBeganHook(Touch*touch,SDL_Event*event)
+bool CheckBox::touchBeganHook(Touch*touch,SDL_Event*event)
 {
 	bool selected = this->isSelected();
 	this->updateStatus(selected);
+	return true;
 }
 void CheckBox::touchMovedInHook(Touch*touch,SDL_Event*event)
 {

@@ -41,9 +41,10 @@ void RadioButton::addEventListener(const ccRadioButtonCallback&callback)
 {
 	_radioButtonEventCallback = callback;
 }
-void RadioButton::touchBeganHook(Touch*touch,SDL_Event*event)
+bool RadioButton::touchBeganHook(Touch*touch,SDL_Event*event)
 {
 	this->selected();
+	return true;
 }
 void RadioButton::touchMovedInHook(Touch*touch,SDL_Event*event)
 {

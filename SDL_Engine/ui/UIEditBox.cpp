@@ -190,13 +190,14 @@ bool EditBox::hitTest(Touch* touch)
 	return true;
 }
 
-void EditBox::touchBeganHook(Touch*touch,SDL_Event*event)
+bool EditBox::touchBeganHook(Touch*touch,SDL_Event*event)
 {
 	auto pos = touch->getLocation();
 	//转化为相对于父类的坐标
 	pos = this->getParent()->convertToNodeSpace(pos);
 	//获取包围盒
 	auto rect = this->getBoundingBox();
+	bool ret = false;
 
 	if (rect.containsPoint(pos))
 	{
@@ -227,6 +228,7 @@ void EditBox::touchBeganHook(Touch*touch,SDL_Event*event)
 				_index++;
 		}
 		this->updateCursor();
+		ret = true;
 	}
 	else if (SDL_IsTextInputActive())
 	{
@@ -236,7 +238,9 @@ void EditBox::touchBeganHook(Touch*touch,SDL_Event*event)
 		_delegate->editBoxEditingEndWithAction(this, EditBoxEndAction::UNKNOWN);
 		//隐藏光标
 		this->hideCursor();
+		ret = true;
 	}
+	return ret;
 }
 
 void EditBox::touchMovedInHook(Touch*touch,SDL_Event*event)
