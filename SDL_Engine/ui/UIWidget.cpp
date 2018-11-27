@@ -78,7 +78,7 @@ Node* Widget::getVirtualRenderer()
 bool Widget::onTouchBegan(Touch*touch,SDL_Event*event)
 {
 	//如果碰撞成功
-	if(this->hitTest(touch))
+	if(hitTest(touch))
 	{
 		_shouldCallback = true;
 		this->touchBeganHook(touch,event);
@@ -95,7 +95,7 @@ bool Widget::onTouchBegan(Touch*touch,SDL_Event*event)
 }
 void Widget::onTouchMoved(Touch*touch,SDL_Event*event)
 {
-	bool bRet = this->hitTest(touch);
+	bool bRet = hitTest(touch);
 	//如果碰撞成功
 	if(_shouldCallback && bRet)
 	{
@@ -111,7 +111,7 @@ void Widget::onTouchEnded(Touch*touch,SDL_Event*event)
 {
 	this->retain();
 
-	bool bRet = this->hitTest(touch);
+	bool bRet = hitTest(touch);
 	//应该回调并且在范围内，进行函数回调
 	if(_shouldCallback && bRet)
 	{
@@ -134,7 +134,7 @@ void Widget::onTouchEnded(Touch*touch,SDL_Event*event)
 void Widget::onTouchCancelled(Touch*touch,SDL_Event*event)
 {
 	//如果碰撞成功
-	if(_shouldCallback && this->hitTest(touch))
+	if(_shouldCallback && hitTest(touch))
 	{
 		if(_touchCallback)
 			_touchCallback(this,TouchEventType::CANCELLED);

@@ -68,6 +68,7 @@
 #include "SDL_Engine/ui/UICheckBox.h"
 #include "SDL_Engine/ui/UIRadioButton.h"
 #include "SDL_Engine/ui/UIRadioButtonGroup.h"
+#include "SDL_Engine/ui/UIEditBox.h"
 
 #include "SDL_Engine/base64.h"
 

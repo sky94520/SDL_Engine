@@ -47,3 +47,8 @@
 
 2018-11-12
 22.当前所有的事件监听器优先级默认为0，注意，注意，注意！！！
+
+2018-11-26
+23.EventListenerTouchOneByOne类的onTouchBegan()返回值为true表示吞并事件，
+并且该事件在onTouchMoved()、onTouchEnded()同样有用，不过如果想要真正地吞并事件，
+还需要调用listener->setSwallowTouches(true)
