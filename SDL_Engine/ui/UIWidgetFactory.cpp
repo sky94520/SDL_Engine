@@ -6,6 +6,8 @@
 #include "UIWidget.h"
 #include "UIButton.h"
 #include "UIRadioButton.h"
+#include "UISlider.h"
+#include "UIEditBox.h"
 
 #include "../SENode.h"
 #include "../SELayer.h"
@@ -55,6 +57,8 @@ Node*UIWidgetFactory::createWidget(UIWidgetData* widgetData)
 	case kWidgetType_LoadingBar:widget = this->createLoadingBar(widgetData);break;
 	case kWidgetType_Scale9Sprite: widget = this->createScale9Sprite(widgetData); break;
 	case kWidgetType_ProgressTimer: widget = this->createProgressTime(widgetData); break;
+	case kWidgetType_Slider: widget = this->createSlider(widgetData); break;
+	case kWidgetType_EditBox: widget = this->createEditBox(widgetData); break;
 	}
 	if(widget)
 	{
@@ -107,6 +111,7 @@ Node*UIWidgetFactory::createSprite(UIWidgetData*widgetData)
 	TextureResType resType = TextureResType::LOCAL;
 	Rect rect;
 	bool bRect = false;
+	Color3B colorMod(255, 255, 255);
 
 	auto& properties = widgetData->getProperties();
 	for(auto property:properties)
@@ -126,6 +131,10 @@ Node*UIWidgetFactory::createSprite(UIWidgetData*widgetData)
 		{
 			rect = RectFromString(value);
 			bRect = true;
+		}
+		else if (name == "color-mod")
+		{
+			colorMod = Color3B(value);
 		}
 	}
 	Sprite* sprite = nullptr;
@@ -149,6 +158,7 @@ Node*UIWidgetFactory::createSprite(UIWidgetData*widgetData)
 			sprite = Sprite::createWithSpriteFrameName(filename);break;
 		}
 	}
+	sprite->setColorMod(colorMod);
 
 	return sprite;
 }
@@ -204,6 +214,7 @@ Node*UIWidgetFactory::createLabelAtlas(UIWidgetData*widgetData)
 	int startChar = 0;
 	std::string filename = "";
 	float kerning = 1.f;
+	Color3B color;
 
 	auto& properties = widgetData->getProperties();
 	for(auto property:properties)
@@ -227,6 +238,8 @@ Node*UIWidgetFactory::createLabelAtlas(UIWidgetData*widgetData)
 			startChar = SDL_atoi(value);
 		else if(name == "kerning")
 			kerning = (float)SDL_atof(value);
+		else if (name == "color")
+			color = Color3B(value);
 	}
 	LabelAtlas*label = nullptr;
 	if(bColorKey)
@@ -235,6 +248,7 @@ Node*UIWidgetFactory::createLabelAtlas(UIWidgetData*widgetData)
 		label = LabelAtlas::create(text,filename,itemWidth,itemHeight,startChar);
 	if(kerning < 1.f)
 		label->setFontKerning(kerning);
+
 	return label;
 }
 Node*UIWidgetFactory::createLabelDotChar(UIWidgetData*widgetData)
@@ -312,6 +326,7 @@ Node*UIWidgetFactory::createButton(UIWidgetData*widgetData)
 	std::string selectedImage;
 	std::string disabledImage;
 	TextureResType resType = TextureResType::LOCAL;
+	int priority = 0;
 
 	auto& properties = widgetData->getProperties();
 	for(auto property:properties)
@@ -329,8 +344,12 @@ Node*UIWidgetFactory::createButton(UIWidgetData*widgetData)
 			selectedImage = value;
 		else if(name == "disabled-image")
 			disabledImage = value;
+		else if (name == "priority")
+			priority = stoi(value);
 	}
 	Button*btn = Button::create(normalImage,selectedImage,disabledImage,resType);
+	btn->setPriority(priority);
+
 	return btn;
 }
 
@@ -339,6 +358,7 @@ Node*UIWidgetFactory::createCheckBox(UIWidgetData*widgetData)
 	std::string background;
 	std::string cross;
 	TextureResType resType = TextureResType::LOCAL;
+	int priority = 0;
 
 	auto& properties = widgetData->getProperties();
 	for(auto property:properties)
@@ -354,9 +374,12 @@ Node*UIWidgetFactory::createCheckBox(UIWidgetData*widgetData)
 			background = value;
 		else if(name == "cross")
 			cross = value;
+		else if (name == "priority")
+			priority = stoi(value);
 	}
 	//todo
 	CheckBox*checkBox = CheckBox::create(background,cross,resType);
+	checkBox->setPriority(priority);
 	
 	return checkBox;
 }
@@ -369,6 +392,7 @@ Node* UIWidgetFactory::createRadioButton(UIWidgetData* widgetData)
 	std::string backgroundDisabled;
 	std::string crossDisabled;
 	TextureResType resType = TextureResType::LOCAL;
+	int priority = 0;
 
 	auto& properties = widgetData->getProperties();
 	
@@ -388,9 +412,13 @@ Node* UIWidgetFactory::createRadioButton(UIWidgetData* widgetData)
 			cross = value;
 		else if (name == "background-disabled")
 			backgroundDisabled = value;
+		else if (name == "priority")
+			priority = stoi(value);
 	}
 	RadioButton* radioBtn = RadioButton::create(background,backgroundSelected
 		,cross,backgroundDisabled,crossDisabled,resType);
+
+	radioBtn->setPriority(priority);
 
 	return radioBtn;
 }
@@ -496,6 +524,72 @@ Node* UIWidgetFactory::createScale9Sprite(UIWidgetData* widgetData)
 	ret->setPreferredSize(preferredSize);
 
 	return ret;
+}
+
+Node* UIWidgetFactory::createSlider(UIWidgetData* widgetData)
+{
+	TextureResType resType = TextureResType::LOCAL;
+	std::string barFilename;
+	std::string progressFilename;
+	std::string ballNormalFilename;
+	int percent = 0;
+	int maxPercent = 100;
+	int priority = 0;
+
+	auto& properties = widgetData->getProperties();
+
+	for (auto property : properties)
+	{
+		std::string name = property.first;
+		std::string value = property.second;
+
+		if (name == "bar")
+			barFilename = value;
+		else if (name == "progress-bar")
+			progressFilename = value;
+		else if (name == "ball-normal")
+			ballNormalFilename = value;
+		else if (name == "percent")
+			percent = stoi(value);
+		else if (name == "max-percent")
+			maxPercent = stoi(value);
+		else if (name == "res-type")
+		{
+			if (value == "LOCAL") resType = TextureResType::LOCAL;
+			else if (value == "XML") resType = TextureResType::XML;
+		}
+		else if (name == "priority")
+			priority = stoi(value);
+	}
+	//创建背景
+	auto size = widgetData->getSize();
+	auto bar = Scale9Sprite::create(barFilename);
+	bar->setPreferredSize(size);
+	//创建小按钮
+	Sprite* ballNormalSprite = nullptr;
+	if (resType == TextureResType::LOCAL)
+		ballNormalSprite = Sprite::create(ballNormalFilename);
+	else if (resType == TextureResType::XML)
+		ballNormalSprite = Sprite::createWithSpriteFrameName(ballNormalFilename);
+	//创建进度条
+	Scale9Sprite* progressBar = nullptr;
+	if (!progressFilename.empty())
+		progressBar = Scale9Sprite::create(progressFilename);
+	//创建Slider
+	auto slider = Slider::create(bar, ballNormalSprite);
+	if (progressBar != nullptr)
+		slider->loadProgressBarSprite(progressBar);
+
+	slider->setMaxPercent(maxPercent);
+	slider->setPercent(percent);
+	slider->setPriority(priority);
+
+	return slider;
+}
+
+Node* UIWidgetFactory::createEditBox(UIWidgetData* widgetData)
+{
+	return nullptr;
 }
 
 Node*UIWidgetFactory::createProgressTime(UIWidgetData*widgetData)

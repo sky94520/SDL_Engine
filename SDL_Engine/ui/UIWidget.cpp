@@ -14,6 +14,7 @@ Widget::Widget()
 	,_swallowTouches(true)
 	,_shouldCallback(false)
 	,_touchListener(nullptr)
+	,_priority(0)
 {
 	_cascadeScale = true;
 }
@@ -48,8 +49,8 @@ void Widget::setTouchEnabled(bool isEnable)
 		_touchListener->onTouchCancelled = SDL_CALLBACK_2(Widget::onTouchCancelled,this);
 
 		_touchListener->setSwallowTouches(true);
-		//设置为最高优先级
-		_touchListener->setPriority(0);
+		//设置为优先级
+		_touchListener->setPriority(_priority);
 		//添加事件
 		_eventDispatcher->addEventListener(_touchListener,this);
 	}
@@ -68,6 +69,21 @@ void Widget::setSwallowTouches(bool swallow)
 bool Widget::isSwallowTouches()const
 {
 	return _swallowTouches;
+}
+
+void Widget::setPriority(int priority)
+{
+	if (_priority == priority)
+		return;
+
+	_priority = priority;
+	if (_touchListener != nullptr)
+		_touchListener->setPriority(_priority);
+}
+
+int Widget::getPriority() const
+{
+	return _priority;
 }
 
 Node* Widget::getVirtualRenderer()

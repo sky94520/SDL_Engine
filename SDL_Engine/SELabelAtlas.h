@@ -6,6 +6,7 @@
 #include "SENode.h"
 #include "SETexture.h"
 #include "SELabel.h"
+#include "SEColor.h"
 NS_SDL_BEGIN
 class Sprite;
 class LabelAtlas:public Label
@@ -38,6 +39,7 @@ public:
 	//override
 	virtual void draw();
 	virtual void setString(const std::string&label);
+	
 	float getFontKerning()const;
 	/*设置字距，如果存在字体背景，可能会出现字块的重合
 	,这个函数会影响content size，请注意使用规范.废弃的，不建议使用*/

@@ -42,6 +42,9 @@ private:
 	Node* createRadioButton(UIWidgetData* widgetData);
 	Node* createLoadingBar(UIWidgetData* widgetData);
 	Node* createScale9Sprite(UIWidgetData* widgetData);
+
+	Node* createSlider(UIWidgetData* widgetData);
+	Node* createEditBox(UIWidgetData* widgetData);
 private:
 	/**
 	@brief 反序列化 从字符串中解析得到Rect

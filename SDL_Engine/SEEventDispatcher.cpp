@@ -174,9 +174,11 @@ void EventDispatcher::dispatchKeyboardEvent(SDL_Event& event)
 	};
 	//获取键盘事件监听器
 	auto listeners = getListeners(EventListenerKeyboard::LISTENER_ID);
+	//新添加的不进行事件接收
+	auto size = listeners != nullptr ? listeners->size() : 0;
 	/*在这里不能使用迭代器，因为在执行函数中可能会有replaceScen或popScene，会改变监听器的大小
 	从而使得迭代器失效*/
-	for(unsigned int i=0;listeners && i < listeners->size();i++)
+	for(unsigned int i=0;listeners && i < size;i++)
 	{
 		auto listener = dynamic_cast<EventListenerKeyboard*>(listeners->at(i));
 		onEvent(listener,event);
@@ -194,7 +196,10 @@ void EventDispatcher::dispatchKeyboardStateEvent(SDL_Event& event)
 			listener->onEvent(keyStates,&event);
 	};
 	auto listeners = this->getListeners(EventListenerKeyboardState::LISTENER_ID);
-	for(unsigned int i = 0;listeners && i < listeners->size();i++)
+	//新添加的不进行事件接收
+	auto size = listeners != nullptr ? listeners->size() : 0;
+
+	for(unsigned int i = 0;listeners && i < size;i++)
 	{
 		auto listener = dynamic_cast<EventListenerKeyboardState*>(listeners->at(i));
 		onEvent(listener,event);
@@ -233,7 +238,10 @@ void EventDispatcher::dispatchMouseEvent(SDL_Event& event)
 	};
 	//获取鼠标监听事件
 	auto listeners = this->getListeners(EventListenerMouse::LISTENER_ID);
-	for(unsigned int i=0;listeners && i < listeners->size();i++)
+	//新添加的不进行事件接收
+	auto size = listeners != nullptr ? listeners->size() : 0;
+
+	for(unsigned int i=0;listeners && i < size;i++)
 	{
 		auto listener = dynamic_cast<EventListenerMouse*>(listeners->at(i));
 		onEvent(listener,event);
@@ -261,7 +269,9 @@ void EventDispatcher::dispatchTextInputEvent(SDL_Event& event)
 			listener->onTextEditing(composition, cursor, selection_len, &event);
 		}
 	};
-	for (unsigned int i = 0; listeners && i < listeners->size(); i++)
+	//新添加的不进行事件接收
+	auto size = listeners != nullptr ? listeners->size() : 0;
+	for (unsigned int i = 0; listeners && i < size; i++)
 	{
 		auto listener = static_cast<EventListenerTextInput*>(listeners->at(i));
 		onEvent(listener, event);
@@ -313,7 +323,9 @@ void EventDispatcher::dispatchCustomEvent(EventCustom*eventCustom)
 
 	auto listeners = this->getListeners(EventListenerCustom::LISTENER_ID);
 
-	for(unsigned int i=0;listeners && i < listeners->size();i++)
+	//新添加的不进行事件接收
+	auto size = listeners != nullptr ? listeners->size() : 0;
+	for(unsigned int i=0;listeners && i < size;i++)
 	{
 		auto listener = dynamic_cast<EventListenerCustom*>(listeners->at(i));
 
@@ -347,12 +359,15 @@ void EventDispatcher::dispatchEventToTouchOneByOne(const std::vector<Touch*> &to
 		return isSwallow;
 	};
 
+	//新添加的不进行事件接收
+	auto size = listeners != nullptr ? listeners->size() : 0;
+
 	for(auto touch:touches)
 	{
 		if(touch->isAvailable() == false)
 			continue;
 
-		for(unsigned int i = 0;i < listeners->size();i++)
+		for(unsigned int i = 0;i < size;i++)
 		{
 			auto listener = listeners->at(i);
 
@@ -392,7 +407,9 @@ void EventDispatcher::dispatchEventToTouchAllAtOnce(const std::vector<Touch*>& t
 		if(touch->isAvailable())
 			t.push_back(touch);
 	}
-	for(unsigned int i = 0;i < listeners->size();i++)
+	//新添加的不进行事件接收
+	auto size = listeners != nullptr ? listeners->size() : 0;
+	for(unsigned int i = 0;i < size;i++)
 	{
 		auto listener = listeners->at(i);
 		if(listener->isRegistered() && listener->checkAvailable() && !listener->isPaused())

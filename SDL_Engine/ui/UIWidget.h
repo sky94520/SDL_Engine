@@ -37,6 +37,8 @@ protected:
 	bool _swallowTouches;//是否屏蔽触屏
 	bool _shouldCallback;//是否应该响应事件
 	EventListenerTouchOneByOne*_touchListener;
+	//事件优先级
+	int _priority;
 public:
 	Widget();
 	~Widget();
@@ -49,6 +51,9 @@ public:
 
 	void setSwallowTouches(bool swallow);
 	bool isSwallowTouches()const;
+
+	void setPriority(int priority);
+	int getPriority() const;
 
 	virtual Node* getVirtualRenderer();
 	virtual bool onTouchBegan(Touch*touch,SDL_Event*event);

@@ -94,6 +94,10 @@ void UIWidgetManager::setWidgetBaseData(rapidxml::xml_node<>*node,UIWidgetData*w
 		widgetData->setWidgetType(kWidgetType_Scale9Sprite);
 	else if (name == "ProgressTimer")
 		widgetData->setWidgetType(kWidgetType_ProgressTimer);
+	else if (name == "Slider")
+		widgetData->setWidgetType(kWidgetType_Slider);
+	else if (name == "EditBox")
+		widgetData->setWidgetType(kWidgetType_EditBox);
 	//设置基础属性
 	for(auto attr = node->first_attribute();attr;attr = attr->next_attribute())
 	{

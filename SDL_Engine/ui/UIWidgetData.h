@@ -31,6 +31,8 @@ enum WidgetType
 	kWidgetType_LoadingBar,
 	kWidgetType_Scale9Sprite,
 	kWidgetType_ProgressTimer,
+	kWidgetType_Slider,
+	kWidgetType_EditBox,
 };
 class UIWidgetData:public Object
 {
