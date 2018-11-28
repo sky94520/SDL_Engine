@@ -5,6 +5,7 @@ ui基础属性
 				Sprite属性
 1.filename	会尝试Sprite::create和Sprite::createWithSpriteFrameName()两种
 2.rect
+3.color-mod
 
 				LabelTTF属性
 1.text
@@ -38,6 +39,13 @@ ui基础属性
 2.normal-image
 3.selected-image
 4.disabled-image
+				Slider
+1.bar
+2.progress-bar
+3.ball-normal
+4.percent
+5.max-percent
+6.res-type
 				Xml
 	<Xml name="shop_player_life" anchor-point="0,0">
 		<properties>
@@ -76,3 +84,4 @@ UIWidgetSystem 负责产生组件的总类
 
 2018-04-17
 1.add 添加了size字段的支持
+2.add 所有Widget控件 增加一个priority属性，负责控制监听器优先级
