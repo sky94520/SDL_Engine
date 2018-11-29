@@ -360,6 +360,7 @@ void EventDispatcher::dispatchEventToTouchOneByOne(const std::vector<Touch*> &to
 	};
 
 	//新添加的不进行事件接收
+	//TODO:发现bug 在事件回调时删除
 	auto size = listeners != nullptr ? listeners->size() : 0;
 
 	for(auto touch:touches)
