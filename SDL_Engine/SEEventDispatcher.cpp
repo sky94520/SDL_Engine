@@ -12,41 +12,67 @@
 
 NS_SDL_BEGIN
 EventDispatcher::EventDispatcher()
-	:_reorderListenersDirty(false)
+	:_inDispatch(false)
+	,_reorderListenersDirty(false)
 {
 }
 EventDispatcher::~EventDispatcher()
 {
-	for(auto iter = _listeners.begin();iter != _listeners.end();)
+	for(auto iter = _listenerMap.begin();iter != _listenerMap.end();)
 	{
 		auto listeners = iter->second;
 
-		iter = _listeners.erase(iter);
+		iter = _listenerMap.erase(iter);
+		delete listeners;
+	}
+
+	for (auto iter = _nodeListenersMap.begin(); iter != _nodeListenersMap.end();)
+	{
+		auto listeners = iter->second;
+		
+		iter = _nodeListenersMap.erase(iter);
 		delete listeners;
 	}
 }
 
-void EventDispatcher::addEventListener(EventListener*listener,Node*node)
+void EventDispatcher::addEventListener(EventListener* listener, Node* node)
 {
 	//保证该事件监听器没被注册
 	SDLASSERT(listener && !listener->isRegistered(),"listener should not nullptr");
-
-	std::string listenerID = listener->getListenerID();
-	std::vector<EventListener*>* listeners=nullptr;
-	auto iter = _listeners.find(listenerID);
-
-	if(iter == _listeners.end())
-	{
-		listeners = new std::vector<EventListener*>();
-		_listeners.insert(std::make_pair(listenerID,listeners));
-	}
-	else
-		listeners = iter->second;
-
-	listeners->push_back(listener);
-
+	//注册
 	listener->setAssociatedNode(node);
 	listener->setRegistered(true);
+	//当前正在分发事件
+	if (_inDispatch)
+	{
+		_toAddedListeners.push_back(listener);
+	}
+	else
+	{
+		this->forceAddEventListener(listener, node);
+	}
+	listener->retain();
+}
+
+void EventDispatcher::forceAddEventListener(EventListener* listener, Node* node)
+{
+	std::string listenerID = listener->getListenerID();
+	std::vector<EventListener*>* listeners=nullptr;
+	auto iter = _listenerMap.find(listenerID);
+
+	//不存在对应的vector，则创建一个
+	if(iter == _listenerMap.end())
+	{
+		listeners = new std::vector<EventListener*>();
+		_listenerMap.insert(std::make_pair(listenerID,listeners));
+	}
+	else
+	{
+		listeners = iter->second;
+	}
+	listeners->push_back(listener);
+	this->associateNodeAndEventListener(node, listener);
+
 	listener->retain();
 	_reorderListenersDirty = true;
 
@@ -60,103 +86,232 @@ void EventDispatcher::addEventCustomListener(const std::string&eventName,const s
 	this->addEventListener(listener,node);
 }
 
-bool EventDispatcher::removeEventListener(EventListener*listener)
+void EventDispatcher::removeEventListener(EventListener* listener)
 {
 	if(listener==nullptr)
-		return false;
-	auto listenerVector = getListeners(listener->getListenerID());
-	
-	auto iter = std::find_if(listenerVector->begin(),listenerVector->end(),[listener](EventListener*l)
-	{
-		return listener == l;
-	});
-	if(iter != listenerVector->end())
-	{
-		listenerVector->erase(iter);
-		listener->setRegistered(false);
+		return ;
 
-		listener->setAssociatedNode(nullptr);
-		//取消对listener的引用
-		listener->release();
-		return true;
+	auto removeListenerInVector = [&](std::vector<EventListener*>* listeners)->bool
+	{
+		bool isFound = false;
+
+		if (listeners == nullptr)
+			return false;
+		auto iter = std::find(listeners->begin(),listeners->end(), listener);
+		//找到，则进行逻辑删除
+		if(iter != listeners->end())
+		{
+			listener->setRegistered(false);
+
+			//维护_nodeListenersMap
+			if (listener->getAssociatedNode() != nullptr)
+			{
+				this->dissociateNodeAndEventListener(listener->getAssociatedNode()
+								   , listener);
+				listener->setAssociatedNode(nullptr);
+			}
+	
+			if (_inDispatch)
+			{
+				_toRemovedListeners.push_back(listener);
+			}
+			else
+			{
+				listeners->erase(iter);
+
+				listener->setAssociatedNode(nullptr);
+				//取消对listener的引用
+				listener->release();
+			}
+			isFound = true;
+		}
+		return isFound;
+	};
+	//已经在待删除列表中，直接退出
+	if (std::find(_toRemovedListeners.begin(), _toRemovedListeners.end(), listener) != _toRemovedListeners.end())
+		return ;
+
+	bool isFound = false;
+	//遍历
+	for (auto iter = _listenerMap.begin(); iter != _listenerMap.end();)
+	{
+		//找到对应的容器
+		auto listeners = iter->second;
+		if (iter->first == listener->getListenerID())
+		{
+			isFound = removeListenerInVector(listeners);
+		}
+		if (listeners->empty())
+		{
+			iter = _listenerMap.erase(iter);
+			SDL_SAFE_DELETE(listeners);
+		}
+		else
+		{
+			++iter;
+		}
+		if (isFound)
+			break;
 	}
-	return false;
+	//查看是否在待添加列表中
+	if (!isFound)
+	{
+		for (auto iter = _toAddedListeners.begin(); iter != _toAddedListeners.end();++iter)
+		{
+			if (*iter == listener)
+			{
+				listener->setRegistered(false);
+				SDL_SAFE_RELEASE(listener);
+				_toAddedListeners.erase(iter);
+				break;
+			}
+		}
+	}
+	return ;
 }
 
 void EventDispatcher::removeEventListenerForTarget(Node*node,bool recursive/*=false*/)
 {
 	SDLASSERT(node!=NULL,"node should not null");
-	for(auto listenerIter=_listeners.begin();listenerIter!=_listeners.end();)
+
+	auto listenerIter = _nodeListenersMap.find(node);
+
+	if (listenerIter != _nodeListenersMap.end())
+	{
+		auto listeners = listenerIter->second;
+		auto listenersCopy = *listeners;
+
+		for (auto& listener : listenersCopy)
+		{
+			this->removeEventListener(listener);
+		}
+	}
+	/*
+	for(auto listenerIter=_listenerMap.begin();listenerIter!=_listenerMap.end();)
 	{
 		std::vector<EventListener*>* listenerVec = listenerIter->second;
 		for(auto iter=listenerVec->begin();iter!=listenerVec->end();)
 		{
 			auto listener = *iter;
 
+			//找到对应的节点
 			if(listener->getAssociatedNode() == node)
 			{
-				iter = listenerVec->erase(iter);
-
 				listener->setRegistered(false);
 				listener->setAssociatedNode(nullptr);
-				listener->release();
+
+				if (_inDispatch)
+				{
+					_toRemovedListeners.push_back(listener);
+					++iter;
+				}
+				else
+				{
+					iter = listenerVec->erase(iter);
+
+					listener->release();
+				}
 			}
 			else
+			{
 				++iter;
+			}
 		}
 		listenerIter++;
+	}
+	*/
+	for (auto iter = _toAddedListeners.begin(); iter != _toAddedListeners.end();)
+	{
+		EventListener* listener = *iter;
+
+		if (listener->getAssociatedNode() == node)
+		{
+			listener->setAssociatedNode(nullptr);
+			listener->setRegistered(false);
+			SDL_SAFE_RELEASE(listener);
+			iter = _toAddedListeners.erase(iter);
+		}
+		else
+		{
+			++iter;
+		}
+	}
+
+	if (recursive)
+	{
+		const auto& children = node->getChildren();
+
+		for (const auto& child: children)
+		{
+			removeEventListenerForTarget(child);
+		}
 	}
 }
 
 void EventDispatcher::resumeEventListenersForTarget(Node*node,bool recursive/*=false*/)
 {
 	SDLASSERT(node,"node should not null");
-	for(auto listenerIter=_listeners.begin();listenerIter!=_listeners.end();)
+
+	auto listenerIter = _nodeListenersMap.find(node);
+
+	if (listenerIter != _nodeListenersMap.end())
 	{
-		std::vector<EventListener*>* listeners = listenerIter->second;
-		for(auto iter=listeners->begin();iter!=listeners->end();)
+		auto listeners = listenerIter->second;
+
+		for (auto& listener : *listeners)
 		{
-			auto listener = *iter;
-			if(listener->getAssociatedNode() == node)
-			{
-				listener->setPaused(false);
-			}
-			iter++;
+			listener->setPaused(false);
 		}
-		listenerIter++;
 	}
-	/*if(recursive)
+
+	for (auto& listener : _toAddedListeners)
 	{
-		for(const auto child:node->getC)
-	}*/
+		if (listener->getAssociatedNode() == node)
+		{
+			listener->setPaused(false);
+		}
+	}
+	if(recursive)
+	{
+		const auto& children = node->getChildren();
+		for(const auto& child : children)
+		{
+			resumeEventListenersForTarget(child, true);
+		}
+	}
 }
 
 void EventDispatcher::pauseEventListenersForTarget(Node*node,bool recursive/*=false*/)
 {
 	SDLASSERT(node,"node should not null");
-	for(auto listenerIter=_listeners.begin();listenerIter!=_listeners.end();)
+
+	auto listenerIter = _nodeListenersMap.find(node);
+
+	if (listenerIter != _nodeListenersMap.end())
 	{
-		std::vector<EventListener*>* listeners = listenerIter->second;
-		for(auto iter=listeners->begin();iter!=listeners->end();)
+		auto listeners = listenerIter->second;
+
+		for (auto& listener : *listeners)
 		{
-			auto listener = *iter;
-			if(listener->getAssociatedNode() == node)
-			{
-				listener->setPaused(true);
-			}
-			iter++;
-		}
-		listenerIter++;
-	}
-	/*for(const auto&listener:_touchOneByOneVector)
-	{
-		if(listener->getAssociatedNode()==node)
 			listener->setPaused(true);
-	}*/
-	/*if(recursive)
+		}
+	}
+
+	for (auto& listener : _toAddedListeners)
 	{
-		for(const auto child:node->getC)
-	}*/
+		if (listener->getAssociatedNode() == node)
+		{
+			listener->setPaused(true);
+		}
+	}
+	if(recursive)
+	{
+		const auto& children = node->getChildren();
+		for(const auto& child : children)
+		{
+			pauseEventListenersForTarget(child, true);
+		}
+	}
 }
 
 void EventDispatcher::dispatchKeyboardEvent(SDL_Event& event)
@@ -174,10 +329,8 @@ void EventDispatcher::dispatchKeyboardEvent(SDL_Event& event)
 	};
 	//获取键盘事件监听器
 	auto listeners = getListeners(EventListenerKeyboard::LISTENER_ID);
-	//新添加的不进行事件接收
+
 	auto size = listeners != nullptr ? listeners->size() : 0;
-	/*在这里不能使用迭代器，因为在执行函数中可能会有replaceScen或popScene，会改变监听器的大小
-	从而使得迭代器失效*/
 	for(unsigned int i=0;listeners && i < size;i++)
 	{
 		auto listener = dynamic_cast<EventListenerKeyboard*>(listeners->at(i));
@@ -196,7 +349,7 @@ void EventDispatcher::dispatchKeyboardStateEvent(SDL_Event& event)
 			listener->onEvent(keyStates,&event);
 	};
 	auto listeners = this->getListeners(EventListenerKeyboardState::LISTENER_ID);
-	//新添加的不进行事件接收
+	//事件分发
 	auto size = listeners != nullptr ? listeners->size() : 0;
 
 	for(unsigned int i = 0;listeners && i < size;i++)
@@ -238,7 +391,6 @@ void EventDispatcher::dispatchMouseEvent(SDL_Event& event)
 	};
 	//获取鼠标监听事件
 	auto listeners = this->getListeners(EventListenerMouse::LISTENER_ID);
-	//新添加的不进行事件接收
 	auto size = listeners != nullptr ? listeners->size() : 0;
 
 	for(unsigned int i=0;listeners && i < size;i++)
@@ -269,7 +421,7 @@ void EventDispatcher::dispatchTextInputEvent(SDL_Event& event)
 			listener->onTextEditing(composition, cursor, selection_len, &event);
 		}
 	};
-	//新添加的不进行事件接收
+
 	auto size = listeners != nullptr ? listeners->size() : 0;
 	for (unsigned int i = 0; listeners && i < size; i++)
 	{
@@ -295,22 +447,6 @@ void EventDispatcher::dispatchCustomEvent(const std::string&eventName,void*userD
 	eventCustom.setUserData(userData);
 
 	this->dispatchCustomEvent(&eventCustom);
-/*	auto onEvent = [eventName](EventListenerCustom*listener,EventCustom*event)
-	{
-		if(eventName == listener->getEventName())
-			listener->onCustomEvent(event);
-	};
-
-	auto listeners = this->getListeners(EventListenerCustom::LISTENER_ID);
-
-	for(unsigned int i=0;listeners && i < listeners->size();i++)
-	{
-		auto listener = dynamic_cast<EventListenerCustom*>(listeners->at(i));
-		auto eventCustom = EventCustom(eventName);
-		eventCustom.setUserData(userData);
-
-		onEvent(listener,&eventCustom);
-	}*/
 }
 
 void EventDispatcher::dispatchCustomEvent(EventCustom*eventCustom)
@@ -323,13 +459,94 @@ void EventDispatcher::dispatchCustomEvent(EventCustom*eventCustom)
 
 	auto listeners = this->getListeners(EventListenerCustom::LISTENER_ID);
 
-	//新添加的不进行事件接收
 	auto size = listeners != nullptr ? listeners->size() : 0;
 	for(unsigned int i=0;listeners && i < size;i++)
 	{
 		auto listener = dynamic_cast<EventListenerCustom*>(listeners->at(i));
 
 		onEvent(listener,eventCustom);
+	}
+}
+
+void EventDispatcher::updateListeners(const std::string& listenerID)
+{
+	auto onUpdateListeners = [this](const std::string& listenerID)
+	{
+		auto listenerIter = _listenerMap.find(listenerID);
+		if (listenerIter == _listenerMap.end())
+			return;
+
+		auto listeners = listenerIter->second;
+
+		for (auto iter = listeners->begin(); iter != listeners->end();)
+		{
+			auto listener = *iter;
+
+			//监听器未注册
+			if (!listener->isRegistered())
+			{
+				iter = listeners->erase(iter);
+
+				auto matchIter = std::find(_toRemovedListeners.begin()
+						, _toRemovedListeners.end(), listener);
+
+				if (matchIter != _toRemovedListeners.end())
+					_toRemovedListeners.erase(matchIter);
+				SDL_SAFE_RELEASE(listener);
+			}
+			else
+			{
+				++iter;
+			}
+		}
+	};
+	
+	if (listenerID == EventListenerTouchOneByOne::LISTENER_ID
+	 || listenerID == EventListenerAllAtOnce::LISTENER_ID)
+	{
+		onUpdateListeners(EventListenerTouchOneByOne::LISTENER_ID);
+		onUpdateListeners(EventListenerAllAtOnce::LISTENER_ID);
+	}
+	else if (listenerID == EventListenerKeyboard::LISTENER_ID
+			|| listenerID == EventListenerKeyboardState::LISTENER_ID)
+	{
+		onUpdateListeners(EventListenerKeyboard::LISTENER_ID);
+		onUpdateListeners(EventListenerKeyboardState::LISTENER_ID);
+	}
+	else if (listenerID == EventListenerMouse::LISTENER_ID)
+	{
+		onUpdateListeners(EventListenerMouse::LISTENER_ID);
+		onUpdateListeners(EventListenerTouchOneByOne::LISTENER_ID);
+	}
+	else
+	{
+		onUpdateListeners(listenerID);
+	}
+	//清空empty的vector
+	for (auto iter = _listenerMap.begin(); iter != _listenerMap.end();)
+	{
+		if (iter->second->empty())
+		{
+			delete iter->second;
+
+			iter = _listenerMap.erase(iter);
+		}
+		else
+		{
+			++iter;
+		}
+	}
+	if (!_toAddedListeners.empty())
+	{
+		for (auto& listener : _toAddedListeners)
+		{
+			this->forceAddEventListener(listener, listener->getAssociatedNode());
+		}
+		_toAddedListeners.clear();
+	}
+	if (!_toRemovedListeners.empty())
+	{
+		this->cleanToRemovedListeners();
 	}
 }
 
@@ -359,8 +576,6 @@ void EventDispatcher::dispatchEventToTouchOneByOne(const std::vector<Touch*> &to
 		return isSwallow;
 	};
 
-	//新添加的不进行事件接收
-	//TODO:发现bug 在事件回调时删除
 	auto size = listeners != nullptr ? listeners->size() : 0;
 
 	for(auto touch:touches)
@@ -408,7 +623,7 @@ void EventDispatcher::dispatchEventToTouchAllAtOnce(const std::vector<Touch*>& t
 		if(touch->isAvailable())
 			t.push_back(touch);
 	}
-	//新添加的不进行事件接收
+
 	auto size = listeners != nullptr ? listeners->size() : 0;
 	for(unsigned int i = 0;i < size;i++)
 	{
@@ -422,9 +637,9 @@ void EventDispatcher::dispatchEventToTouchAllAtOnce(const std::vector<Touch*>& t
 
 std::vector<EventListener*>* EventDispatcher::getListeners(const std::string&listenerID)
 {
-	auto iter = _listeners.find(listenerID);
+	auto iter = _listenerMap.find(listenerID);
 
-	return iter == _listeners.end() ? nullptr:iter->second;
+	return iter == _listenerMap.end() ? nullptr:iter->second;
 }
 
 void EventDispatcher::sortEventListeners()
@@ -432,7 +647,7 @@ void EventDispatcher::sortEventListeners()
 	if(_reorderListenersDirty)
 	{
 		_reorderListenersDirty = false;
-		for(auto iter=_listeners.begin();iter!=_listeners.end();)
+		for(auto iter=_listenerMap.begin();iter!=_listenerMap.end();)
 		{
 			std::vector<EventListener*> &listenerVector = *iter->second;
 			std::stable_sort(std::begin(listenerVector),std::end(listenerVector),sorted);
@@ -444,6 +659,74 @@ void EventDispatcher::sortEventListeners()
 bool EventDispatcher::sorted(EventListener*e1,EventListener*e2)
 {
 	return e1->getPriority() < e2->getPriority();
+}
+
+void EventDispatcher::cleanToRemovedListeners()
+{
+	for (auto& listener : _toRemovedListeners)
+	{
+		auto listenersIter = _listenerMap.find(listener->getListenerID());
+
+		if (listenersIter == _listenerMap.end())
+		{
+			SDL_SAFE_RELEASE(listener);
+			continue;
+		}
+		auto listeners = listenersIter->second;
+		auto matchIter = std::find(listeners->begin(), listeners->end(), listener);
+
+		//找到 删除
+		if (matchIter != listeners->end())
+		{
+			listeners->erase(matchIter);
+			SDL_SAFE_RELEASE(listener);
+		}
+		else
+		{
+			SDL_SAFE_RELEASE(listener);
+		}
+	}
+	_toRemovedListeners.clear();
+}
+
+void EventDispatcher::associateNodeAndEventListener(Node* node, EventListener* listener)
+{
+	std::vector<EventListener*>* listeners = nullptr;
+	auto found = _nodeListenersMap.find(node);
+
+	if (found != _nodeListenersMap.end())
+	{
+		listeners = found->second;
+	}
+	else
+	{
+		listeners = new std::vector<EventListener*>();
+		_nodeListenersMap.emplace(node, listeners);
+	}
+	listeners->push_back(listener);
+}
+
+void EventDispatcher::dissociateNodeAndEventListener(Node* node, EventListener* listener)
+{
+	std::vector<EventListener*>* listeners = nullptr;
+	auto found = _nodeListenersMap.find(node);
+
+	if (found != _nodeListenersMap.end())
+	{
+		listeners = found->second;
+		auto iter = std::find(listeners->begin(), listeners->end(), listener);
+
+		if (iter != listeners->end())
+		{
+			listeners->erase(iter);
+		}
+
+		if (listeners->empty())
+		{
+			_nodeListenersMap.erase(found);
+			delete listeners;
+		}
+	}
 }
 
 NS_SDL_END

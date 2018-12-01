@@ -3,10 +3,12 @@
 */
 #ifndef __SDL_InputHandler_H__
 #define __SDL_InputHandler_H__
-#include<vector>
-#include<map>
-#include<algorithm>
-#include<functional>
+#include <vector>
+#include <map>
+#include <string>
+#include <algorithm>
+#include <functional>
+
 #include "SDL.h"
 
 #include "SEObject.h"

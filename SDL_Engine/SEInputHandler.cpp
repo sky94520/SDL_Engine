@@ -1,6 +1,12 @@
 #include "SEInputHandler.h"
 #include "SEDirector.h"
 #include "SEEventListener.h"
+#include "SEEventListenerTouchOneByOne.h"
+#include "SEEventListenerAllAtOnce.h"
+#include "SEEventListenerMouse.h"
+#include "SEEventListenerTextInput.h"
+#include "SEEventListenerCustom.h"
+#include "SEEventListenerKeyboardState.h"
 #include "SEEventListenerKeyboard.h"
 #include "SETouch.h"
 #include "SEEventDispatcher.h"
@@ -21,7 +27,10 @@ void InputHandler::update()
 {
 	SDL_Event event = {};
 	EventDispatcher* eventDispatcher = Director::getInstance()->getEventDispatcher();
-	//test
+	//标记：当前正在分发事件
+	eventDispatcher->setInDispatch(true);
+	std::string listenerID = "";
+
 	//对事件进行轮询
 	while(SDL_PollEvent(&event))
 	{
@@ -34,22 +43,27 @@ void InputHandler::update()
 			{
 				eventDispatcher->dispatchKeyboardEvent(event);
 				eventDispatcher->dispatchKeyboardStateEvent(event);
+				listenerID = EventListenerKeyboard::LISTENER_ID;
 			}break;
 			//触碰事件
 			case SDL_FINGERDOWN:
 			{
 				touchBegan(event);
 				eventDispatcher->dispatchTouchEvent(_touches,event); 
+				listenerID = EventListenerTouchOneByOne::LISTENER_ID;
 			}break;
 			case SDL_FINGERMOTION:
 			{
 				touchMoved(event);
 				eventDispatcher->dispatchTouchEvent(_touches,event); 
+				listenerID = EventListenerTouchOneByOne::LISTENER_ID;
 			}break;
 			case SDL_FINGERUP:
 			{
 				touchEnded(event);
 				eventDispatcher->dispatchTouchEvent(_touches,event); 
+
+				listenerID = EventListenerTouchOneByOne::LISTENER_ID;
 			}break;
 			//鼠标事件
 			case SDL_MOUSEBUTTONDOWN:
@@ -57,29 +71,47 @@ void InputHandler::update()
 				mouseBtnDown(event);
 				eventDispatcher->dispatchTouchEvent(_touches,event);
 				eventDispatcher->dispatchMouseEvent(event); 
+
+				listenerID = EventListenerMouse::LISTENER_ID;
 			}break;
 			case SDL_MOUSEBUTTONUP:
 			{
 				mouseBtnUp(event); 
 				eventDispatcher->dispatchTouchEvent(_touches,event);
 				eventDispatcher->dispatchMouseEvent(event);
+
+				listenerID = EventListenerMouse::LISTENER_ID;
 			}break;
 			case SDL_MOUSEMOTION:
 			{
 				mouseMotion(event); 
 				eventDispatcher->dispatchTouchEvent(_touches,event);
 				eventDispatcher->dispatchMouseEvent(event);
+
+				listenerID = EventListenerMouse::LISTENER_ID;
 			}break;
 			case SDL_MOUSEWHEEL:
+			{
 				eventDispatcher->dispatchMouseEvent(event);
+				listenerID = EventListenerMouse::LISTENER_ID;
+			}
 				break;
 			//文本输入事件
 			case SDL_TEXTINPUT:
 			case SDL_TEXTEDITING:
+			{
 				eventDispatcher->dispatchTextInputEvent(event);
+			}
 				break;
 		}
 	}
+	if (!listenerID.empty())
+	{
+		eventDispatcher->updateListeners(listenerID);
+	}
+
+	eventDispatcher->setInDispatch(false);
+
 	for(unsigned int i = 0;i<_touches.size();i++)
 	{
 		auto touch = _touches.at(i);
