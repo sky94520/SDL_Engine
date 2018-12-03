@@ -2,7 +2,7 @@
 NS_SDL_BEGIN
 namespace StringUtils
 {
-std::string format(const char*format,...)
+std::string format(const char*format, ...)
 {
 	std::string ret;
 	va_list args;
@@ -17,30 +17,10 @@ std::string format(const char*format,...)
 	va_end(args);
 	return ret;
 }
-ValueVector split(const std::string&src,const std::string&token)
+
+ValueVector split(const std::string& src ,const std::string& token)
 {
 	ValueVector vect;
-/*	std::string str(srcStr);
-	ValueVector stringList;
-	int size = str.size();
-
-	int startIndex = 0;
-	int endIndex = 0;
-	endIndex = str.find(sSep);
-
-	std::string lineStr;
-	while(endIndex > 0)
-	{
-		lineStr = str.substr(startIndex,endIndex);
-		Value value(lineStr);
-		stringList.push_back(value);
-		str = str.substr(endIndex+1);
-
-		endIndex = str.find(sSep);
-	}
-	if(str.compare("") != 0)
-		stringList.push_back(Value(str));
-	return stringList;*/
 
 	size_t nend = 0;
 	size_t nbegin = 0;
@@ -59,14 +39,17 @@ ValueVector split(const std::string&src,const std::string&token)
 	}
 	return vect;
 }
-ValueVector split(const std::string&src,char ch)
+
+ValueVector split(const std::string&src, char ch)
 {
 	std::string token;
 	token = ch;
 
-	return split(src,token);
+	return split(src, token);
 }
-void split(const std::string& src,const std::string& token,const std::function<void (int,Value)>& callback)
+
+void split(const std::string& src, const std::string& token
+	  ,const std::function<void (int,const Value&)>& callback)
 {
 	size_t nend = 0;
 	size_t nbegin = 0;
@@ -93,6 +76,7 @@ void split(const std::string& src,const std::string& token,const std::function<v
 		index++;
 	}
 }
+
 //计算Char对应的UTF8码的掩码和长度  
 #define UTF8_COMPUTE(Char, Mask, Len)\
 	if (Char < 128)		\
@@ -183,6 +167,7 @@ long cc_utf8_strlen (const char * p, int max)
   
     return len;  
 }
+
 //将Unicode编码字符串p转换为UTF8编码  
 unsigned int cc_utf8_get_char (const char * p)  
 {

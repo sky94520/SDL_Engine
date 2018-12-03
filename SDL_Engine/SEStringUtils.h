@@ -44,7 +44,7 @@ std::string format(const char*format,...);
 //拆分字符串
 ValueVector split(const std::string&src,const std::string&token);
 ValueVector split(const std::string&src,char ch);
-void split(const std::string& src,const std::string& token,const std::function<void (int,Value)>& callback);
+void split(const std::string& src,const std::string& token,const std::function<void (int,const Value&)>& callback);
 
 template<typename T>
 std::string toString(T t)
