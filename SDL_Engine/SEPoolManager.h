@@ -13,7 +13,8 @@ private:
 	~PoolManager();
 public:
 	static PoolManager* getInstance();
-	void purge();// Õ∑≈µ•¿˝¿‡
+	//release the single instance
+	static void purge();
 	AutoreleasePool* getCurReleasePool();
 	void addObject(Object* pObject);
 	void removeObject(Object* pObject);
