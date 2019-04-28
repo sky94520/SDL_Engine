@@ -23,7 +23,7 @@ private:
 private:
 	std::string _layerName;
 	//保存着该layer解压缩后的数据
-	std::vector<int> _data;
+	std::vector<unsigned> _data;
 	int _width;
 	int _height;
 	int _offsetX;

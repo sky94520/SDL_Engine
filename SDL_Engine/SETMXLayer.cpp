@@ -224,22 +224,13 @@ void TMXLayer::uncompression(const std::string&compression,const std::string&dec
 {
 	if(compression == "zlib")
 	{
-		uLongf numGids = _width * _height*sizeof(int);
+		uLongf numGids = _width * _height*sizeof(unsigned);
 		//后四分之三为空，不知道为什么
-		auto data = std::vector<int>(numGids);
-		uncompress((Bytef*)&data[0],&numGids,(const Bytef*)decodeIDs.c_str(),decodeIDs.size());
+		auto gids = std::vector<unsigned>(numGids);
+		uncompress((Bytef*)&gids[0],&numGids,(const Bytef*)decodeIDs.c_str(),decodeIDs.size());
 		//赋值
-		_data = data;
-/*		std::vector<int> layerRow(_width);
-		for(int i=0;i<_height;i++)
-			_data.push_back(layerRow);
-		for(int rows = 0;rows < _height;rows++)
-		{
-			for(int cols = 0;cols < _width;cols++)
-			{
-				_data[rows][cols] = data[rows * _width + cols];
-			}
-		}*/
+		_data = std::vector<unsigned>(_width * _height);
+		std::copy(gids.begin(), gids.begin() + _width * _height, _data.begin());
 	}
 }
 void TMXLayer::setTiledMap(TMXTiledMap*tiledMap)
