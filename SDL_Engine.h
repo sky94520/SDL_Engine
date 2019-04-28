@@ -79,6 +79,9 @@
 #include "SDL_Engine/SETMXTiledMap.h"
 #include "SDL_Engine/SETMXImageLayer.h"
 
+#include "SDL_Engine/SEFastTiledMap.h"
+#include "SDL_Engine/SEFastLayer.h"
+
 #include "SDL_Engine/SESDLNS.h"
 #include "SDL_Engine/SEAnimationCache.h"
 #include "SDL_Engine/SEFontCache.h"
