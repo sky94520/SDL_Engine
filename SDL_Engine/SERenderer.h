@@ -48,6 +48,8 @@ public:
 	void present();
 	//画
 	int copy(Texture* texture,const SDL_Rect* srcRect,SDL_Rect* destRect);
+	int copy(Texture* texture, const Rect& srcRect, const Rect& destRect);
+
 	int copyEx(Texture* texture,const SDL_Rect* srcRect,SDL_Rect* destRect,const double angle,const SDL_Point* center,SDL_RendererFlip flip);
 	int copyEx(Texture* texture,const Rect& srcRect,const Rect& destRect,const double angle,const Point& center,SDL_RendererFlip flip);
 	//一些画图函数

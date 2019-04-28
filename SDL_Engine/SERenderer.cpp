@@ -99,6 +99,14 @@ int Renderer::copy(Texture* texture,const SDL_Rect* srcRect,SDL_Rect* destRect)
 	return SDL_RenderCopy(_renderer,texture->_texture,srcRect,destRect);
 }
 
+int Renderer::copy(Texture* texture, const Rect& srcRect, const Rect& destRect)
+{
+	SDL_Rect src = srcRect.getSDL_Rect();
+	SDL_Rect dest = destRect.getSDL_Rect();
+
+	return this->copy(texture, &src, &dest);
+}
+
 int Renderer::copyEx(Texture* texture,const SDL_Rect* srcRect,SDL_Rect* destRect,const double angle,const SDL_Point* center,SDL_RendererFlip flip)
 {
 	return SDL_RenderCopyEx(_renderer,texture->_texture,srcRect,destRect,angle,center,flip);
