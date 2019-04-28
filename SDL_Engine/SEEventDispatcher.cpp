@@ -13,12 +13,12 @@
 NS_SDL_BEGIN
 EventDispatcher::EventDispatcher()
 	:_inDispatch(false)
-	,_reorderListenersDirty(false)
+	, _reorderListenersDirty(false)
 {
 }
 EventDispatcher::~EventDispatcher()
 {
-	for(auto iter = _listenerMap.begin();iter != _listenerMap.end();)
+	for (auto iter = _listenerMap.begin(); iter != _listenerMap.end();)
 	{
 		auto listeners = iter->second;
 
@@ -29,7 +29,7 @@ EventDispatcher::~EventDispatcher()
 	for (auto iter = _nodeListenersMap.begin(); iter != _nodeListenersMap.end();)
 	{
 		auto listeners = iter->second;
-		
+
 		iter = _nodeListenersMap.erase(iter);
 		delete listeners;
 	}
@@ -38,7 +38,7 @@ EventDispatcher::~EventDispatcher()
 void EventDispatcher::addEventListener(EventListener* listener, Node* node)
 {
 	//保证该事件监听器没被注册
-	SDLASSERT(listener && !listener->isRegistered(),"listener should not nullptr");
+	SDLASSERT(listener && !listener->isRegistered(), "listener should not nullptr");
 	//注册
 	listener->setAssociatedNode(node);
 	listener->setRegistered(true);
@@ -46,25 +46,26 @@ void EventDispatcher::addEventListener(EventListener* listener, Node* node)
 	if (_inDispatch)
 	{
 		_toAddedListeners.push_back(listener);
+		listener->retain();
 	}
 	else
 	{
 		this->forceAddEventListener(listener, node);
 	}
-	listener->retain();
+	//listener->retain();
 }
 
 void EventDispatcher::forceAddEventListener(EventListener* listener, Node* node)
 {
 	std::string listenerID = listener->getListenerID();
-	std::vector<EventListener*>* listeners=nullptr;
+	std::vector<EventListener*>* listeners = nullptr;
 	auto iter = _listenerMap.find(listenerID);
 
 	//不存在对应的vector，则创建一个
-	if(iter == _listenerMap.end())
+	if (iter == _listenerMap.end())
 	{
 		listeners = new std::vector<EventListener*>();
-		_listenerMap.insert(std::make_pair(listenerID,listeners));
+		_listenerMap.insert(std::make_pair(listenerID, listeners));
 	}
 	else
 	{
@@ -76,20 +77,20 @@ void EventDispatcher::forceAddEventListener(EventListener* listener, Node* node)
 	listener->retain();
 	_reorderListenersDirty = true;
 
-	if(node->isRunning())
+	if (node->isRunning())
 		this->resumeEventListenersForTarget(node);
 }
 
-void EventDispatcher::addEventCustomListener(const std::string&eventName,const std::function<void(EventCustom*)>&onEventCustom,Node*node)
+void EventDispatcher::addEventCustomListener(const std::string&eventName, const std::function<void(EventCustom*)>&onEventCustom, Node*node)
 {
-	auto listener = EventListenerCustom::create(eventName,onEventCustom);
-	this->addEventListener(listener,node);
+	auto listener = EventListenerCustom::create(eventName, onEventCustom);
+	this->addEventListener(listener, node);
 }
 
 void EventDispatcher::removeEventListener(EventListener* listener)
 {
-	if(listener==nullptr)
-		return ;
+	if (listener == nullptr)
+		return;
 
 	auto removeListenerInVector = [&](std::vector<EventListener*>* listeners)->bool
 	{
@@ -97,9 +98,9 @@ void EventDispatcher::removeEventListener(EventListener* listener)
 
 		if (listeners == nullptr)
 			return false;
-		auto iter = std::find(listeners->begin(),listeners->end(), listener);
+		auto iter = std::find(listeners->begin(), listeners->end(), listener);
 		//找到，则进行逻辑删除
-		if(iter != listeners->end())
+		if (iter != listeners->end())
 		{
 			listener->setRegistered(false);
 
@@ -107,10 +108,10 @@ void EventDispatcher::removeEventListener(EventListener* listener)
 			if (listener->getAssociatedNode() != nullptr)
 			{
 				this->dissociateNodeAndEventListener(listener->getAssociatedNode()
-								   , listener);
+					, listener);
 				listener->setAssociatedNode(nullptr);
 			}
-	
+
 			if (_inDispatch)
 			{
 				_toRemovedListeners.push_back(listener);
@@ -129,7 +130,7 @@ void EventDispatcher::removeEventListener(EventListener* listener)
 	};
 	//已经在待删除列表中，直接退出
 	if (std::find(_toRemovedListeners.begin(), _toRemovedListeners.end(), listener) != _toRemovedListeners.end())
-		return ;
+		return;
 
 	bool isFound = false;
 	//遍历
@@ -156,7 +157,7 @@ void EventDispatcher::removeEventListener(EventListener* listener)
 	//查看是否在待添加列表中
 	if (!isFound)
 	{
-		for (auto iter = _toAddedListeners.begin(); iter != _toAddedListeners.end();++iter)
+		for (auto iter = _toAddedListeners.begin(); iter != _toAddedListeners.end(); ++iter)
 		{
 			if (*iter == listener)
 			{
@@ -167,12 +168,12 @@ void EventDispatcher::removeEventListener(EventListener* listener)
 			}
 		}
 	}
-	return ;
+	return;
 }
 
-void EventDispatcher::removeEventListenerForTarget(Node*node,bool recursive/*=false*/)
+void EventDispatcher::removeEventListenerForTarget(Node*node, bool recursive/*=false*/)
 {
-	SDLASSERT(node!=NULL,"node should not null");
+	SDLASSERT(node != NULL, "node should not null");
 
 	auto listenerIter = _nodeListenersMap.find(node);
 
@@ -241,16 +242,16 @@ void EventDispatcher::removeEventListenerForTarget(Node*node,bool recursive/*=fa
 	{
 		const auto& children = node->getChildren();
 
-		for (const auto& child: children)
+		for (const auto& child : children)
 		{
 			removeEventListenerForTarget(child);
 		}
 	}
 }
 
-void EventDispatcher::resumeEventListenersForTarget(Node*node,bool recursive/*=false*/)
+void EventDispatcher::resumeEventListenersForTarget(Node*node, bool recursive/*=false*/)
 {
-	SDLASSERT(node,"node should not null");
+	SDLASSERT(node, "node should not null");
 
 	auto listenerIter = _nodeListenersMap.find(node);
 
@@ -271,19 +272,19 @@ void EventDispatcher::resumeEventListenersForTarget(Node*node,bool recursive/*=f
 			listener->setPaused(false);
 		}
 	}
-	if(recursive)
+	if (recursive)
 	{
 		const auto& children = node->getChildren();
-		for(const auto& child : children)
+		for (const auto& child : children)
 		{
 			resumeEventListenersForTarget(child, true);
 		}
 	}
 }
 
-void EventDispatcher::pauseEventListenersForTarget(Node*node,bool recursive/*=false*/)
+void EventDispatcher::pauseEventListenersForTarget(Node*node, bool recursive/*=false*/)
 {
-	SDLASSERT(node,"node should not null");
+	SDLASSERT(node, "node should not null");
 
 	auto listenerIter = _nodeListenersMap.find(node);
 
@@ -304,10 +305,10 @@ void EventDispatcher::pauseEventListenersForTarget(Node*node,bool recursive/*=fa
 			listener->setPaused(true);
 		}
 	}
-	if(recursive)
+	if (recursive)
 	{
 		const auto& children = node->getChildren();
-		for(const auto& child : children)
+		for (const auto& child : children)
 		{
 			pauseEventListenersForTarget(child, true);
 		}
@@ -316,73 +317,73 @@ void EventDispatcher::pauseEventListenersForTarget(Node*node,bool recursive/*=fa
 
 void EventDispatcher::dispatchKeyboardEvent(SDL_Event& event)
 {
-	auto onEvent = [](EventListenerKeyboard*listener,SDL_Event& event)
+	auto onEvent = [](EventListenerKeyboard*listener, SDL_Event& event)
 	{
-		if(listener->checkAvailable())
+		if (listener->checkAvailable())
 		{
 			SDL_Keycode keyCode = event.key.keysym.sym;
-			if(event.type == SDL_KEYDOWN && listener->onKeyPressed)
-				listener->onKeyPressed(keyCode,&event);
-			else if(event.type == SDL_KEYUP && listener->onKeyReleased)
-				listener->onKeyReleased(keyCode,&event);
+			if (event.type == SDL_KEYDOWN && listener->onKeyPressed)
+				listener->onKeyPressed(keyCode, &event);
+			else if (event.type == SDL_KEYUP && listener->onKeyReleased)
+				listener->onKeyReleased(keyCode, &event);
 		}
 	};
 	//获取键盘事件监听器
 	auto listeners = getListeners(EventListenerKeyboard::LISTENER_ID);
 
 	auto size = listeners != nullptr ? listeners->size() : 0;
-	for(unsigned int i=0;listeners && i < size;i++)
+	for (unsigned int i = 0; listeners && i < size; i++)
 	{
 		auto listener = dynamic_cast<EventListenerKeyboard*>(listeners->at(i));
-		onEvent(listener,event);
+		onEvent(listener, event);
 	}
 }
 
 void EventDispatcher::dispatchKeyboardStateEvent(SDL_Event& event)
 {
-	auto onEvent = [](EventListenerKeyboardState*listener,SDL_Event& event)
+	auto onEvent = [](EventListenerKeyboardState*listener, SDL_Event& event)
 	{
-		if(listener->checkAvailable() == false)
+		if (listener->checkAvailable() == false)
 			return;
 		const Uint8*keyStates = SDL_GetKeyboardState(NULL);
-		if(listener->onEvent)
-			listener->onEvent(keyStates,&event);
+		if (listener->onEvent)
+			listener->onEvent(keyStates, &event);
 	};
 	auto listeners = this->getListeners(EventListenerKeyboardState::LISTENER_ID);
 	//事件分发
 	auto size = listeners != nullptr ? listeners->size() : 0;
 
-	for(unsigned int i = 0;listeners && i < size;i++)
+	for (unsigned int i = 0; listeners && i < size; i++)
 	{
 		auto listener = dynamic_cast<EventListenerKeyboardState*>(listeners->at(i));
-		onEvent(listener,event);
+		onEvent(listener, event);
 	}
 }
 
 void EventDispatcher::dispatchMouseEvent(SDL_Event& event)
 {
-	auto onEvent = [](EventListenerMouse*listener,SDL_Event& event)->bool
+	auto onEvent = [](EventListenerMouse*listener, SDL_Event& event)->bool
 	{
-		if(listener->checkAvailable() == false)
+		if (listener->checkAvailable() == false)
 			return false;
 		//发送事件
 		Uint32 type = event.type;
-		if(type == SDL_MOUSEBUTTONDOWN && listener->onMouseDown)
+		if (type == SDL_MOUSEBUTTONDOWN && listener->onMouseDown)
 		{
 			SDL_MouseButtonEvent*e = &event.button;
 			listener->onMouseDown(e);
 		}
-		else if(type == SDL_MOUSEBUTTONUP && listener->onMouseUp)
+		else if (type == SDL_MOUSEBUTTONUP && listener->onMouseUp)
 		{
 			SDL_MouseButtonEvent*e = &event.button;
 			listener->onMouseUp(e);
 		}
-		else if(type == SDL_MOUSEMOTION && listener->onMouseMotion)
+		else if (type == SDL_MOUSEMOTION && listener->onMouseMotion)
 		{
 			SDL_MouseMotionEvent*e = &event.motion;
 			listener->onMouseMotion(e);
 		}
-		else if(type == SDL_MOUSEWHEEL && listener->onMouseScroll)
+		else if (type == SDL_MOUSEWHEEL && listener->onMouseScroll)
 		{
 			SDL_MouseWheelEvent*e = &event.wheel;
 			listener->onMouseScroll(e);
@@ -393,10 +394,10 @@ void EventDispatcher::dispatchMouseEvent(SDL_Event& event)
 	auto listeners = this->getListeners(EventListenerMouse::LISTENER_ID);
 	auto size = listeners != nullptr ? listeners->size() : 0;
 
-	for(unsigned int i=0;listeners && i < size;i++)
+	for (unsigned int i = 0; listeners && i < size; i++)
 	{
 		auto listener = dynamic_cast<EventListenerMouse*>(listeners->at(i));
-		onEvent(listener,event);
+		onEvent(listener, event);
 	}
 }
 
@@ -407,7 +408,7 @@ void EventDispatcher::dispatchTextInputEvent(SDL_Event& event)
 	auto onEvent = [](EventListenerTextInput* listener, SDL_Event& event)
 	{
 		if (!listener->checkAvailable())
-			return ;
+			return;
 		if (event.type == SDL_TEXTINPUT && listener->onTextInput != nullptr)
 		{
 			listener->onTextInput(event.text.text, &event);
@@ -430,18 +431,18 @@ void EventDispatcher::dispatchTextInputEvent(SDL_Event& event)
 	}
 }
 
-void EventDispatcher::dispatchTouchEvent(const std::vector<Touch*>& touches,SDL_Event& event)
+void EventDispatcher::dispatchTouchEvent(const std::vector<Touch*>& touches, SDL_Event& event)
 {
 	sortEventListeners();
 
-	if ( !touches.empty())
+	if (!touches.empty())
 	{
-		this->dispatchEventToTouchOneByOne(touches,&event);
-		this->dispatchEventToTouchAllAtOnce(touches,&event);
+		this->dispatchEventToTouchOneByOne(touches, &event);
+		this->dispatchEventToTouchAllAtOnce(touches, &event);
 	}
 }
 
-void EventDispatcher::dispatchCustomEvent(const std::string&eventName,void*userData)
+void EventDispatcher::dispatchCustomEvent(const std::string&eventName, void*userData)
 {
 	EventCustom eventCustom(eventName);
 	eventCustom.setUserData(userData);
@@ -451,20 +452,20 @@ void EventDispatcher::dispatchCustomEvent(const std::string&eventName,void*userD
 
 void EventDispatcher::dispatchCustomEvent(EventCustom*eventCustom)
 {
-	auto onEvent = [](EventListenerCustom*listener,EventCustom*event)
+	auto onEvent = [](EventListenerCustom*listener, EventCustom*event)
 	{
-		if(event->getEventName() == listener->getEventName())
+		if (event->getEventName() == listener->getEventName())
 			listener->onCustomEvent(event);
 	};
 
 	auto listeners = this->getListeners(EventListenerCustom::LISTENER_ID);
 
 	auto size = listeners != nullptr ? listeners->size() : 0;
-	for(unsigned int i=0;listeners && i < size;i++)
+	for (unsigned int i = 0; listeners && i < size; i++)
 	{
 		auto listener = dynamic_cast<EventListenerCustom*>(listeners->at(i));
 
-		onEvent(listener,eventCustom);
+		onEvent(listener, eventCustom);
 	}
 }
 
@@ -488,7 +489,7 @@ void EventDispatcher::updateListeners(const std::string& listenerID)
 				iter = listeners->erase(iter);
 
 				auto matchIter = std::find(_toRemovedListeners.begin()
-						, _toRemovedListeners.end(), listener);
+					, _toRemovedListeners.end(), listener);
 
 				if (matchIter != _toRemovedListeners.end())
 					_toRemovedListeners.erase(matchIter);
@@ -500,15 +501,15 @@ void EventDispatcher::updateListeners(const std::string& listenerID)
 			}
 		}
 	};
-	
+
 	if (listenerID == EventListenerTouchOneByOne::LISTENER_ID
-	 || listenerID == EventListenerAllAtOnce::LISTENER_ID)
+		|| listenerID == EventListenerAllAtOnce::LISTENER_ID)
 	{
 		onUpdateListeners(EventListenerTouchOneByOne::LISTENER_ID);
 		onUpdateListeners(EventListenerAllAtOnce::LISTENER_ID);
 	}
 	else if (listenerID == EventListenerKeyboard::LISTENER_ID
-			|| listenerID == EventListenerKeyboardState::LISTENER_ID)
+		|| listenerID == EventListenerKeyboardState::LISTENER_ID)
 	{
 		onUpdateListeners(EventListenerKeyboard::LISTENER_ID);
 		onUpdateListeners(EventListenerKeyboardState::LISTENER_ID);
@@ -541,6 +542,7 @@ void EventDispatcher::updateListeners(const std::string& listenerID)
 		for (auto& listener : _toAddedListeners)
 		{
 			this->forceAddEventListener(listener, listener->getAssociatedNode());
+			SDL_SAFE_RELEASE(listener);
 		}
 		_toAddedListeners.clear();
 	}
@@ -550,87 +552,87 @@ void EventDispatcher::updateListeners(const std::string& listenerID)
 	}
 }
 
-void EventDispatcher::dispatchEventToTouchOneByOne(const std::vector<Touch*> &touches,SDL_Event*event)
+void EventDispatcher::dispatchEventToTouchOneByOne(const std::vector<Touch*> &touches, SDL_Event*event)
 {
 	auto listeners = getListeners(EventListenerTouchOneByOne::LISTENER_ID);
 
-	if(listeners == nullptr || listeners->empty())
+	if (listeners == nullptr || listeners->empty())
 		return;
 
-	auto onEvent = [&](EventListener*l,Touch*touch)->bool
+	auto onEvent = [&](EventListener*l, Touch*touch)->bool
 	{
 		auto listener = dynamic_cast<EventListenerTouchOneByOne*>(l);
 		bool isSwallow = listener->isTouchBegan();
 
-		if(listener->onTouchBegan && touch->getStatus() == TouchStatus::TOUCH_DOWN)
+		if (listener->onTouchBegan && touch->getStatus() == TouchStatus::TOUCH_DOWN)
 		{
-			isSwallow = listener->onTouchBegan(touch,event);
+			isSwallow = listener->onTouchBegan(touch, event);
 
 			listener->setTouchBegan(isSwallow);
 		}
-		else if(listener->onTouchMoved && touch->getStatus() == TouchStatus::TOUCH_MOTION)
-			listener->onTouchMoved(touch,event);
-		else if(listener->onTouchEnded && touch->getStatus() == TouchStatus::TOUCH_UP)
-			listener->onTouchEnded(touch,event);
+		else if (listener->onTouchMoved && touch->getStatus() == TouchStatus::TOUCH_MOTION)
+			listener->onTouchMoved(touch, event);
+		else if (listener->onTouchEnded && touch->getStatus() == TouchStatus::TOUCH_UP)
+			listener->onTouchEnded(touch, event);
 
 		return isSwallow;
 	};
 
 	auto size = listeners != nullptr ? listeners->size() : 0;
 
-	for(auto touch:touches)
+	for (auto touch : touches)
 	{
-		if(touch->isAvailable() == false)
+		if (touch->isAvailable() == false)
 			continue;
 
-		for(unsigned int i = 0;i < size;i++)
+		for (unsigned int i = 0; i < size; i++)
 		{
 			auto listener = listeners->at(i);
 
-			if(listener->isRegistered() && listener->checkAvailable() && !listener->isPaused())
+			if (listener->isRegistered() && listener->checkAvailable() && !listener->isPaused())
 			{
 				//是否阻塞事件 只是阻塞onTouchBegan
-				bool bSwallow = onEvent(listener,touch);
+				bool bSwallow = onEvent(listener, touch);
 
-				if(bSwallow && listener->isSwallowTouches())
+				if (bSwallow && listener->isSwallowTouches())
 					break;
 			}
 		}
 	}
 }
 
-void EventDispatcher::dispatchEventToTouchAllAtOnce(const std::vector<Touch*>& touches,SDL_Event*event)
+void EventDispatcher::dispatchEventToTouchAllAtOnce(const std::vector<Touch*>& touches, SDL_Event*event)
 {
 	auto listeners = getListeners(EventListenerAllAtOnce::LISTENER_ID);
-	if(listeners == nullptr || listeners->empty())
+	if (listeners == nullptr || listeners->empty())
 		return;
 	//分发事件
-	auto onEvent = [&](EventListener*l,const std::vector<Touch*>&touches)->void
+	auto onEvent = [&](EventListener*l, const std::vector<Touch*>&touches)->void
 	{
 		auto listener = dynamic_cast<EventListenerAllAtOnce*>(l);
-		if(listener->onTouchesBegan && event->type == SDL_FINGERDOWN)
-			listener->onTouchesBegan(touches,event);
-		else if(listener->onTouchesMoved && event->type == SDL_FINGERMOTION)
-			listener->onTouchesMoved(touches,event);
-		else if(listener->onTouchesEnded && event->type == SDL_FINGERUP)
-			listener->onTouchesEnded(touches,event);
+		if (listener->onTouchesBegan && event->type == SDL_FINGERDOWN)
+			listener->onTouchesBegan(touches, event);
+		else if (listener->onTouchesMoved && event->type == SDL_FINGERMOTION)
+			listener->onTouchesMoved(touches, event);
+		else if (listener->onTouchesEnded && event->type == SDL_FINGERUP)
+			listener->onTouchesEnded(touches, event);
 	};
 	//选出有用的touches
 	std::vector<Touch*> t;
-	for(auto iter = touches.begin();iter != touches.end();iter++)
+	for (auto iter = touches.begin(); iter != touches.end(); iter++)
 	{
 		auto touch = *iter;
-		if(touch->isAvailable())
+		if (touch->isAvailable())
 			t.push_back(touch);
 	}
 
 	auto size = listeners != nullptr ? listeners->size() : 0;
-	for(unsigned int i = 0;i < size;i++)
+	for (unsigned int i = 0; i < size; i++)
 	{
 		auto listener = listeners->at(i);
-		if(listener->isRegistered() && listener->checkAvailable() && !listener->isPaused())
+		if (listener->isRegistered() && listener->checkAvailable() && !listener->isPaused())
 		{
-			onEvent(listener,t);
+			onEvent(listener, t);
 		}
 	}
 }
@@ -639,24 +641,24 @@ std::vector<EventListener*>* EventDispatcher::getListeners(const std::string&lis
 {
 	auto iter = _listenerMap.find(listenerID);
 
-	return iter == _listenerMap.end() ? nullptr:iter->second;
+	return iter == _listenerMap.end() ? nullptr : iter->second;
 }
 
 void EventDispatcher::sortEventListeners()
 {
-	if(_reorderListenersDirty)
+	if (_reorderListenersDirty)
 	{
 		_reorderListenersDirty = false;
-		for(auto iter=_listenerMap.begin();iter!=_listenerMap.end();)
+		for (auto iter = _listenerMap.begin(); iter != _listenerMap.end();)
 		{
 			std::vector<EventListener*> &listenerVector = *iter->second;
-			std::stable_sort(std::begin(listenerVector),std::end(listenerVector),sorted);
+			std::stable_sort(std::begin(listenerVector), std::end(listenerVector), sorted);
 			iter++;
 		}
 	}
 }
 
-bool EventDispatcher::sorted(EventListener*e1,EventListener*e2)
+bool EventDispatcher::sorted(EventListener*e1, EventListener*e2)
 {
 	return e1->getPriority() < e2->getPriority();
 }
