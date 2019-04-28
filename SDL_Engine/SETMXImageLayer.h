@@ -12,11 +12,13 @@ NS_SDL_BEGIN
 
 class Sprite;
 class TMXTiledMap;
+class FastTiledMap;
 
 class TMXImageLayer:public Node
 {
 private:
 	friend class TMXTiledMap;
+	friend class FastTiledMap;
 private:
 	ValueMap _properties;
 	Sprite* _sprite;
