@@ -86,4 +86,7 @@
 #include "SDL_Engine/SEAnimationCache.h"
 #include "SDL_Engine/SEFontCache.h"
 
+#include "rapidxml/rapidxml.hpp"
+#include "rapidxml/rapidxml_utils.hpp"
+#include "rapidxml/rapidxml_print.hpp"
 #endif
