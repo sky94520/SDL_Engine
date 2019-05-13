@@ -38,7 +38,9 @@ public:
 	ValueMap getTilePropertiesForGID(int gid) const;
 	bool getTilePropertiesForGID(int gid, ValueMap** value);
 	//通过name获取layer
+	Node* getLayer(const std::string& name);
 	const Node* getLayer(const std::string& name) const;
+
 	template<typename T>
 	T getLayer(const std::string& name) { return dynamic_cast<T>(getLayer(name)); }
 	//获取图块大小

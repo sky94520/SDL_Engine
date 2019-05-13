@@ -166,6 +166,25 @@ const std::vector<Tileset*>& FastTiledMap::getTilesets() const
 	return _tilesets;
 }
 
+Node* FastTiledMap::getLayer(const std::string& name)
+{
+	if(name.empty())
+		return nullptr;
+
+	auto iter = std::find_if(_children.begin(),_children.end(),[name](Node* node)
+	{
+		return node->getName() == name;
+	});
+
+	if (iter != _children.end())
+	{
+		return *iter;
+	}
+
+	return nullptr;
+
+}
+
 const Node* FastTiledMap::getLayer(const std::string&name) const
 {
 	if(name.empty())
