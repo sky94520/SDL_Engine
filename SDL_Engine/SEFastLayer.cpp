@@ -36,6 +36,7 @@ FastLayer::FastLayer()
 
 FastLayer::~FastLayer()
 {
+	SDL_SAFE_RELEASE(_buffer);
 }
 
 FastLayer* FastLayer::create(rapidxml::xml_node<>*root)
