@@ -52,8 +52,8 @@ private:
 	void drawRegion(int srcX, int srcY, int width, int height, int destX, int destY);
 	void drawTile(Renderer* renderer, int id, int destX, int destY);
 
-	bool scroll(int x, int y);
-	void updateBuffer(int x, int y);
+	bool scroll(float x, float y);
+	void updateBuffer(float x, float y);
 	void copyBufferX(int indexMapX, int indexMapY, int tileColNum, int destX, int destY);
 	void copyBufferY(int indexMapX, int indexMapY, int tileRowNum, int destX, int destY);
 
@@ -117,8 +117,8 @@ private:
 	int _deltaHeight;
 
 	//地图在缓冲区的X、Y轴的偏移量，范围在[0, _deltaWidth | _deltaHeight]
-	int _mapOffsetX;
-	int _mapOffsetY;
+	float _mapOffsetX;
+	float _mapOffsetY;
 
 	//缓冲区切割线
 	int _carmarkX;
@@ -131,8 +131,8 @@ private:
 	//记录上一次的位置
 	Point _lastPosition;
 
-	int _otherPosX;
-	int _otherPosY;
+	float _otherPosX;
+	float _otherPosY;
 };
 NS_SDL_END
 #endif

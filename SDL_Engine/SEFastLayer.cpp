@@ -91,15 +91,17 @@ bool FastLayer::init(rapidxml::xml_node<>*root)
 
 void FastLayer::draw()
 {
-	this->fastDraw(-_otherPosX, -_otherPosY);
-	//获取尝试转换世界坐标
-	auto position = this->convertToWorldSpace(_position);
+	//this->fastDraw(-_otherPosX, -_otherPosY);
+	this->fastDraw(0, 0);
+
+	//转换成世界坐标
+	Point position = this->convertToWorldSpace(_position);
 
 	if (position.equals(_lastPosition))
 		return;
 	//获取变化率
-	int dx = int(_lastPosition.x - position.x);
-	int dy = int(_lastPosition.y - position.y);
+	float dx = _lastPosition.x - position.x;
+	float dy = _lastPosition.y - position.y;
 	_lastPosition = position;
 
 	bool exit = false;
@@ -199,7 +201,7 @@ bool FastLayer::initCarmark()
 	_tileWidth = (int)tileSize.width;
 	_tileHeight = (int)tileSize.height;
 	//稍微使得缓冲区大点
-	_extraSize = tileSize;
+	_extraSize = tileSize * 2;
 
 	//缓冲区要稍微比屏幕的尺寸大一些，并且能被tileSize整除
 	Size visibleSize = Director::getInstance()->getVisibleSize();
@@ -268,8 +270,8 @@ void FastLayer::fastDraw(int x, int y)
 	int visibleWidth = (int)visibleSize.width;
 	int visibleHeight = (int)visibleSize.height;
 
-	int tempX = _mapOffsetX % _bufferWidth;
-	int tempY = _mapOffsetY % _bufferHeight;
+	int tempX = (int)_mapOffsetX % _bufferWidth;
+	int tempY = (int)_mapOffsetY % _bufferHeight;
 
 	//切割右下角的宽与高
 	int rightWidth = _bufferWidth - tempX;
@@ -336,12 +338,12 @@ void FastLayer::drawTile(Renderer* renderer, int id, int destX, int destY)
 	renderer->copy(texture, srcRect, destRect);
 }
 
-bool FastLayer::scroll(int x, int y)
+bool FastLayer::scroll(float x, float y)
 {
 	x += _mapOffsetX;
 	y += _mapOffsetY;
 
-	if (x < 0 || y < 0)
+	if (x < 0.f || y < 0.f)
 		return false;
 
 	//缓冲区的偏移
@@ -360,7 +362,7 @@ bool FastLayer::scroll(int x, int y)
 	return true;
 }
 
-void FastLayer::updateBuffer(int x, int y)
+void FastLayer::updateBuffer(float x, float y)
 {
 	_mapOffsetX = x;
 	_mapOffsetY = y;
