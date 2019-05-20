@@ -280,7 +280,7 @@ Texture* Sprite::getTexture() const
 /*不建议使用,以后扩展*/
 void Sprite::setTexture(Texture* texture)
 {
-	texture->retain();
+	SDL_SAFE_RETAIN(texture);
 	//是否需要删除原先的texture
 	if(_texture != nullptr)
 		SDL_SAFE_RELEASE(_texture);
@@ -293,7 +293,6 @@ void Sprite::setTexture(Texture* texture)
 	_rect.size.width = (float)w;
 	_rect.size.height = (float)h;
 	_originalSize = _rect.size;
-
 
 	this->setContentSize(_originalSize);
 }
