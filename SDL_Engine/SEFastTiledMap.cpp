@@ -349,7 +349,8 @@ void FastTiledMap::parseImageLayer(rapidxml::xml_node<>* layerRoot)
 		else if (SDL_strcmp("offsety", name) == 0)
 			offsetY = atoi(attribute->value());
 	}
-	layer->setPosition(offsetX, offsetY);
+	//TODO:
+	layer->setPosition((float)offsetX, (float)offsetY);
 }
 
 void FastTiledMap::parseProperties(rapidxml::xml_node<>*propRoot)

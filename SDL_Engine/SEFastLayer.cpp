@@ -332,7 +332,7 @@ void FastLayer::drawTile(Renderer* renderer, int id, int destX, int destY)
 	Texture* texture = Director::getInstance()->getTextureCache()->getTextureForKey(tileset->source);
 
 	Rect srcRect = tileset->getRectForGID(id);
-	Rect destRect = Rect(destX, destY, _tileWidth, _tileHeight);
+	Rect destRect = Rect((float)destX, (float)destY, (float)_tileWidth, (float)_tileHeight);
 
 	//绘制
 	renderer->copy(texture, srcRect, destRect);
@@ -349,12 +349,12 @@ bool FastLayer::scroll(float x, float y)
 	//缓冲区的偏移
 	if (x > _deltaWidth)
 	{
-		_mapOffsetX = _deltaWidth;
+		_mapOffsetX = (float)_deltaWidth;
 		return false;
 	}
 	if (y > _deltaHeight)
 	{
-		_mapOffsetY = _deltaHeight;
+		_mapOffsetY = (float)_deltaHeight;
 		return false;
 	}
 	//更新缓冲区
