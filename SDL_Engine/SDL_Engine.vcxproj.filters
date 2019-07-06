@@ -1,0 +1,543 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="SDL_Engine">
+      <UniqueIdentifier>{dd4162ce-1b2e-4136-b6d8-89879a3c64e5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SDL_Engine\extensions">
+      <UniqueIdentifier>{62d009f1-0102-4a5a-a388-f138199b3506}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SDL_Engine\ui">
+      <UniqueIdentifier>{f210ad3b-5490-4b32-b30c-f3e17970383f}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="base64.cpp">
+      <Filter>SDL_Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="SEAction.cpp">
+      <Filter>SDL_Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="SEActionEase.cpp">
+      <Filter>SDL_Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="SEActionInstant.cpp">
+      <Filter>SDL_Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="SEActionInterval.cpp">
+      <Filter>SDL_Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="SEActionManager.cpp">
+      <Filter>SDL_Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="SEAnimation.cpp">
+      <Filter>SDL_Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="SEAnimationCache.cpp">
+      <Filter>SDL_Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="SEAnimationFrame.cpp">
+      <Filter>SDL_Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="SEAutoreleasePool.cpp">
+      <Filter>SDL_Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="SEBMFontConfiguration.cpp">
+      <Filter>SDL_Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="SEChunk.cpp">
+      <Filter>SDL_Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="SEDirector.cpp">
+      <Filter>SDL_Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="SEEventDispatcher.cpp">
+      <Filter>SDL_Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="SEEventListenerAllAtOnce.cpp">
+      <Filter>SDL_Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="SEEventListenerCustom.cpp">
+      <Filter>SDL_Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="SEEventListenerKeyboard.cpp">
+      <Filter>SDL_Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="SEEventListenerKeyboardState.cpp">
+      <Filter>SDL_Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="SEEventListenerMouse.cpp">
+      <Filter>SDL_Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="SEEventListenerTextInput.cpp">
+      <Filter>SDL_Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="SEEventListenerTouchOneByOne.cpp">
+      <Filter>SDL_Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="SEFastLayer.cpp">
+      <Filter>SDL_Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="SEFastTiledMap.cpp">
+      <Filter>SDL_Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="SEFileUtils.cpp">
+      <Filter>SDL_Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="SEFont.cpp">
+      <Filter>SDL_Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="SEFontCache.cpp">
+      <Filter>SDL_Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="SEInputHandler.cpp">
+      <Filter>SDL_Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="SELabelAtlas.cpp">
+      <Filter>SDL_Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="SELabelBMFont.cpp">
+      <Filter>SDL_Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="SELabelDotChar.cpp">
+      <Filter>SDL_Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="SELabelTTF.cpp">
+      <Filter>SDL_Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="SELayer.cpp">
+      <Filter>SDL_Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="SELayerColor.cpp">
+      <Filter>SDL_Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="SELoadingBar.cpp">
+      <Filter>SDL_Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="SEMenu.cpp">
+      <Filter>SDL_Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="SEMenuItem.cpp">
+      <Filter>SDL_Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="SEMusic.cpp">
+      <Filter>SDL_Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="SENode.cpp">
+      <Filter>SDL_Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="SENotificationCenter.cpp">
+      <Filter>SDL_Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="SEObject.cpp">
+      <Filter>SDL_Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="SEPoint.cpp">
+      <Filter>SDL_Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="SEPoolManager.cpp">
+      <Filter>SDL_Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="SEProgressTimer.cpp">
+      <Filter>SDL_Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="SERect.cpp">
+      <Filter>SDL_Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="SERenderCommand.cpp">
+      <Filter>SDL_Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="SERenderer.cpp">
+      <Filter>SDL_Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="SEScale9Sprite.cpp">
+      <Filter>SDL_Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="SEScene.cpp">
+      <Filter>SDL_Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="SEScheduler.cpp">
+      <Filter>SDL_Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="SESDL_gfx_mod.cpp">
+      <Filter>SDL_Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="SESDLNS.cpp">
+      <Filter>SDL_Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="SESize.cpp">
+      <Filter>SDL_Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="SESoundManager.cpp">
+      <Filter>SDL_Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="SESprite.cpp">
+      <Filter>SDL_Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="SESpriteFrame.cpp">
+      <Filter>SDL_Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="SESpriteFrameCache.cpp">
+      <Filter>SDL_Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="SEStringUtils.cpp">
+      <Filter>SDL_Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="SESurface.cpp">
+      <Filter>SDL_Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="SETexture.cpp">
+      <Filter>SDL_Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="SETextureCache.cpp">
+      <Filter>SDL_Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="SETileset.cpp">
+      <Filter>SDL_Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="SETMXImageLayer.cpp">
+      <Filter>SDL_Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="SETMXLayer.cpp">
+      <Filter>SDL_Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="SETMXObjectGroup.cpp">
+      <Filter>SDL_Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="SETMXTiledMap.cpp">
+      <Filter>SDL_Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="SETouch.cpp">
+      <Filter>SDL_Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="SEUserDefault.cpp">
+      <Filter>SDL_Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="SEValue.cpp">
+      <Filter>SDL_Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="SEWindow.cpp">
+      <Filter>SDL_Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="extensions\SDL_PxString.cpp">
+      <Filter>SDL_Engine\extensions</Filter>
+    </ClCompile>
+    <ClCompile Include="ui\UIAbstractCheckButton.cpp">
+      <Filter>SDL_Engine\ui</Filter>
+    </ClCompile>
+    <ClCompile Include="ui\UIButton.cpp">
+      <Filter>SDL_Engine\ui</Filter>
+    </ClCompile>
+    <ClCompile Include="ui\UICheckBox.cpp">
+      <Filter>SDL_Engine\ui</Filter>
+    </ClCompile>
+    <ClCompile Include="ui\UIEditBox.cpp">
+      <Filter>SDL_Engine\ui</Filter>
+    </ClCompile>
+    <ClCompile Include="ui\UIRadioButton.cpp">
+      <Filter>SDL_Engine\ui</Filter>
+    </ClCompile>
+    <ClCompile Include="ui\UIRadioButtonGroup.cpp">
+      <Filter>SDL_Engine\ui</Filter>
+    </ClCompile>
+    <ClCompile Include="ui\UISlider.cpp">
+      <Filter>SDL_Engine\ui</Filter>
+    </ClCompile>
+    <ClCompile Include="ui\UIWidget.cpp">
+      <Filter>SDL_Engine\ui</Filter>
+    </ClCompile>
+    <ClCompile Include="ui\UIWidgetData.cpp">
+      <Filter>SDL_Engine\ui</Filter>
+    </ClCompile>
+    <ClCompile Include="ui\UIWidgetDataSetting.cpp">
+      <Filter>SDL_Engine\ui</Filter>
+    </ClCompile>
+    <ClCompile Include="ui\UIWidgetFactory.cpp">
+      <Filter>SDL_Engine\ui</Filter>
+    </ClCompile>
+    <ClCompile Include="ui\UIWidgetManager.cpp">
+      <Filter>SDL_Engine\ui</Filter>
+    </ClCompile>
+    <ClCompile Include="ui\UIWidgetSystem.cpp">
+      <Filter>SDL_Engine\ui</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="base64.h">
+      <Filter>SDL_Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="SEAction.h">
+      <Filter>SDL_Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="SEActionEase.h">
+      <Filter>SDL_Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="SEActionInstant.h">
+      <Filter>SDL_Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="SEActionInterval.h">
+      <Filter>SDL_Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="SEActionManager.h">
+      <Filter>SDL_Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="SEAnimation.h">
+      <Filter>SDL_Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="SEAnimationCache.h">
+      <Filter>SDL_Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="SEAnimationFrame.h">
+      <Filter>SDL_Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="SEAutoreleasePool.h">
+      <Filter>SDL_Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="SEBMFontConfiguration.h">
+      <Filter>SDL_Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="SEChunk.h">
+      <Filter>SDL_Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="SEColor.h">
+      <Filter>SDL_Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="SEDirector.h">
+      <Filter>SDL_Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="SEEventCustom.h">
+      <Filter>SDL_Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="SEEventDispatcher.h">
+      <Filter>SDL_Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="SEEventListener.h">
+      <Filter>SDL_Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="SEEventListenerAllAtOnce.h">
+      <Filter>SDL_Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="SEEventListenerCustom.h">
+      <Filter>SDL_Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="SEEventListenerKeyboard.h">
+      <Filter>SDL_Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="SEEventListenerKeyboardState.h">
+      <Filter>SDL_Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="SEEventListenerMouse.h">
+      <Filter>SDL_Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="SEEventListenerTextInput.h">
+      <Filter>SDL_Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="SEEventListenerTouchOneByOne.h">
+      <Filter>SDL_Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="SEFastLayer.h">
+      <Filter>SDL_Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="SEFastTiledMap.h">
+      <Filter>SDL_Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="SEFileUtils.h">
+      <Filter>SDL_Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="SEFiniteTimeAction.h">
+      <Filter>SDL_Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="SEFont.h">
+      <Filter>SDL_Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="SEFontCache.h">
+      <Filter>SDL_Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="SEInputHandler.h">
+      <Filter>SDL_Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="SELabel.h">
+      <Filter>SDL_Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="SELabelAtlas.h">
+      <Filter>SDL_Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="SELabelBMFont.h">
+      <Filter>SDL_Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="SELabelDotChar.h">
+      <Filter>SDL_Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="SELabelTTF.h">
+      <Filter>SDL_Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="SELayer.h">
+      <Filter>SDL_Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="SELayerColor.h">
+      <Filter>SDL_Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="SELoadingBar.h">
+      <Filter>SDL_Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="SEMath.h">
+      <Filter>SDL_Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="SEMenu.h">
+      <Filter>SDL_Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="SEMenuItem.h">
+      <Filter>SDL_Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="SEMusic.h">
+      <Filter>SDL_Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="SENode.h">
+      <Filter>SDL_Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="SENotificationCenter.h">
+      <Filter>SDL_Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="SEObject.h">
+      <Filter>SDL_Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="SEPlatformMarcos.h">
+      <Filter>SDL_Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="SEPoint.h">
+      <Filter>SDL_Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="SEPoolManager.h">
+      <Filter>SDL_Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="SEProgressTimer.h">
+      <Filter>SDL_Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="SEProtocols.h">
+      <Filter>SDL_Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="SERect.h">
+      <Filter>SDL_Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="SERenderCommand.h">
+      <Filter>SDL_Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="SERenderer.h">
+      <Filter>SDL_Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="SEScale9Sprite.h">
+      <Filter>SDL_Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="SEScene.h">
+      <Filter>SDL_Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="SEScheduler.h">
+      <Filter>SDL_Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="SESDL_gfx_mod.h">
+      <Filter>SDL_Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="SESDLNS.h">
+      <Filter>SDL_Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="SESize.h">
+      <Filter>SDL_Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="SESoundManager.h">
+      <Filter>SDL_Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="SESprite.h">
+      <Filter>SDL_Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="SESpriteFrame.h">
+      <Filter>SDL_Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="SESpriteFrameCache.h">
+      <Filter>SDL_Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="SEStringUtils.h">
+      <Filter>SDL_Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="SESurface.h">
+      <Filter>SDL_Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="SETexture.h">
+      <Filter>SDL_Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="SETextureCache.h">
+      <Filter>SDL_Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="SETileset.h">
+      <Filter>SDL_Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="SETMXImageLayer.h">
+      <Filter>SDL_Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="SETMXLayer.h">
+      <Filter>SDL_Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="SETMXObjectGroup.h">
+      <Filter>SDL_Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="SETMXTiledMap.h">
+      <Filter>SDL_Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="SETouch.h">
+      <Filter>SDL_Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="SEUserDefault.h">
+      <Filter>SDL_Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="SEValue.h">
+      <Filter>SDL_Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="SEVector.h">
+      <Filter>SDL_Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="SEWindow.h">
+      <Filter>SDL_Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="extensions\SDL_PxString.h">
+      <Filter>SDL_Engine\extensions</Filter>
+    </ClInclude>
+    <ClInclude Include="ui\UIAbstractCheckButton.h">
+      <Filter>SDL_Engine\ui</Filter>
+    </ClInclude>
+    <ClInclude Include="ui\UIButton.h">
+      <Filter>SDL_Engine\ui</Filter>
+    </ClInclude>
+    <ClInclude Include="ui\UICheckBox.h">
+      <Filter>SDL_Engine\ui</Filter>
+    </ClInclude>
+    <ClInclude Include="ui\UIEditBox.h">
+      <Filter>SDL_Engine\ui</Filter>
+    </ClInclude>
+    <ClInclude Include="ui\UIRadioButton.h">
+      <Filter>SDL_Engine\ui</Filter>
+    </ClInclude>
+    <ClInclude Include="ui\UIRadioButtonGroup.h">
+      <Filter>SDL_Engine\ui</Filter>
+    </ClInclude>
+    <ClInclude Include="ui\UISlider.h">
+      <Filter>SDL_Engine\ui</Filter>
+    </ClInclude>
+    <ClInclude Include="ui\UIWidget.h">
+      <Filter>SDL_Engine\ui</Filter>
+    </ClInclude>
+    <ClInclude Include="ui\UIWidgetData.h">
+      <Filter>SDL_Engine\ui</Filter>
+    </ClInclude>
+    <ClInclude Include="ui\UIWidgetDataSetting.h">
+      <Filter>SDL_Engine\ui</Filter>
+    </ClInclude>
+    <ClInclude Include="ui\UIWidgetFactory.h">
+      <Filter>SDL_Engine\ui</Filter>
+    </ClInclude>
+    <ClInclude Include="ui\UIWidgetManager.h">
+      <Filter>SDL_Engine\ui</Filter>
+    </ClInclude>
+    <ClInclude Include="ui\UIWidgetSystem.h">
+      <Filter>SDL_Engine\ui</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

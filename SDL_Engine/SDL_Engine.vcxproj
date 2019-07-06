@@ -1,0 +1,305 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>15.0</VCProjectVersion>
+    <ProjectGuid>{D44AA05B-9DEB-4CE9-971A-C03F2FE88837}</ProjectGuid>
+    <RootNamespace>SDLEngine</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0.16299.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup />
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>true</SDLCheck>
+      <ConformanceMode>false</ConformanceMode>
+      <AdditionalIncludeDirectories>F:\SDL_EngineProject\common\local\include;F:\SDL_EngineProject\common\zlib\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <Lib>
+      <AdditionalLibraryDirectories>F:\SDL_EngineProject\common\local\lib\x86;F:\SDL_EngineProject\common\zlib\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>SDL2main.lib;SDL2test.lib;SDL2.lib;SDL2_image.lib;SDL2_mixer.lib;SDL2_ttf.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>true</SDLCheck>
+      <ConformanceMode>true</ConformanceMode>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <ConformanceMode>true</ConformanceMode>
+    </ClCompile>
+    <Link>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <ConformanceMode>true</ConformanceMode>
+    </ClCompile>
+    <Link>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="base64.cpp" />
+    <ClCompile Include="extensions\SDL_PxString.cpp" />
+    <ClCompile Include="SEAction.cpp" />
+    <ClCompile Include="SEActionEase.cpp" />
+    <ClCompile Include="SEActionInstant.cpp" />
+    <ClCompile Include="SEActionInterval.cpp" />
+    <ClCompile Include="SEActionManager.cpp" />
+    <ClCompile Include="SEAnimation.cpp" />
+    <ClCompile Include="SEAnimationCache.cpp" />
+    <ClCompile Include="SEAnimationFrame.cpp" />
+    <ClCompile Include="SEAutoreleasePool.cpp" />
+    <ClCompile Include="SEBMFontConfiguration.cpp" />
+    <ClCompile Include="SEChunk.cpp" />
+    <ClCompile Include="SEDirector.cpp" />
+    <ClCompile Include="SEEventDispatcher.cpp" />
+    <ClCompile Include="SEEventListenerAllAtOnce.cpp" />
+    <ClCompile Include="SEEventListenerCustom.cpp" />
+    <ClCompile Include="SEEventListenerKeyboard.cpp" />
+    <ClCompile Include="SEEventListenerKeyboardState.cpp" />
+    <ClCompile Include="SEEventListenerMouse.cpp" />
+    <ClCompile Include="SEEventListenerTextInput.cpp" />
+    <ClCompile Include="SEEventListenerTouchOneByOne.cpp" />
+    <ClCompile Include="SEFastLayer.cpp" />
+    <ClCompile Include="SEFastTiledMap.cpp" />
+    <ClCompile Include="SEFileUtils.cpp" />
+    <ClCompile Include="SEFont.cpp" />
+    <ClCompile Include="SEFontCache.cpp" />
+    <ClCompile Include="SEInputHandler.cpp" />
+    <ClCompile Include="SELabelAtlas.cpp" />
+    <ClCompile Include="SELabelBMFont.cpp" />
+    <ClCompile Include="SELabelDotChar.cpp" />
+    <ClCompile Include="SELabelTTF.cpp" />
+    <ClCompile Include="SELayer.cpp" />
+    <ClCompile Include="SELayerColor.cpp" />
+    <ClCompile Include="SELoadingBar.cpp" />
+    <ClCompile Include="SEMenu.cpp" />
+    <ClCompile Include="SEMenuItem.cpp" />
+    <ClCompile Include="SEMusic.cpp" />
+    <ClCompile Include="SENode.cpp" />
+    <ClCompile Include="SENotificationCenter.cpp" />
+    <ClCompile Include="SEObject.cpp" />
+    <ClCompile Include="SEPoint.cpp" />
+    <ClCompile Include="SEPoolManager.cpp" />
+    <ClCompile Include="SEProgressTimer.cpp" />
+    <ClCompile Include="SERect.cpp" />
+    <ClCompile Include="SERenderCommand.cpp" />
+    <ClCompile Include="SERenderer.cpp" />
+    <ClCompile Include="SEScale9Sprite.cpp" />
+    <ClCompile Include="SEScene.cpp" />
+    <ClCompile Include="SEScheduler.cpp" />
+    <ClCompile Include="SESDLNS.cpp" />
+    <ClCompile Include="SESDL_gfx_mod.cpp" />
+    <ClCompile Include="SESize.cpp" />
+    <ClCompile Include="SESoundManager.cpp" />
+    <ClCompile Include="SESprite.cpp" />
+    <ClCompile Include="SESpriteFrame.cpp" />
+    <ClCompile Include="SESpriteFrameCache.cpp" />
+    <ClCompile Include="SEStringUtils.cpp" />
+    <ClCompile Include="SESurface.cpp" />
+    <ClCompile Include="SETexture.cpp" />
+    <ClCompile Include="SETextureCache.cpp" />
+    <ClCompile Include="SETileset.cpp" />
+    <ClCompile Include="SETMXImageLayer.cpp" />
+    <ClCompile Include="SETMXLayer.cpp" />
+    <ClCompile Include="SETMXObjectGroup.cpp" />
+    <ClCompile Include="SETMXTiledMap.cpp" />
+    <ClCompile Include="SETouch.cpp" />
+    <ClCompile Include="SEUserDefault.cpp" />
+    <ClCompile Include="SEValue.cpp" />
+    <ClCompile Include="SEWindow.cpp" />
+    <ClCompile Include="ui\UIAbstractCheckButton.cpp" />
+    <ClCompile Include="ui\UIButton.cpp" />
+    <ClCompile Include="ui\UICheckBox.cpp" />
+    <ClCompile Include="ui\UIEditBox.cpp" />
+    <ClCompile Include="ui\UIRadioButton.cpp" />
+    <ClCompile Include="ui\UIRadioButtonGroup.cpp" />
+    <ClCompile Include="ui\UISlider.cpp" />
+    <ClCompile Include="ui\UIWidget.cpp" />
+    <ClCompile Include="ui\UIWidgetData.cpp" />
+    <ClCompile Include="ui\UIWidgetDataSetting.cpp" />
+    <ClCompile Include="ui\UIWidgetFactory.cpp" />
+    <ClCompile Include="ui\UIWidgetManager.cpp" />
+    <ClCompile Include="ui\UIWidgetSystem.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="base64.h" />
+    <ClInclude Include="extensions\SDL_PxString.h" />
+    <ClInclude Include="SEAction.h" />
+    <ClInclude Include="SEActionEase.h" />
+    <ClInclude Include="SEActionInstant.h" />
+    <ClInclude Include="SEActionInterval.h" />
+    <ClInclude Include="SEActionManager.h" />
+    <ClInclude Include="SEAnimation.h" />
+    <ClInclude Include="SEAnimationCache.h" />
+    <ClInclude Include="SEAnimationFrame.h" />
+    <ClInclude Include="SEAutoreleasePool.h" />
+    <ClInclude Include="SEBMFontConfiguration.h" />
+    <ClInclude Include="SEChunk.h" />
+    <ClInclude Include="SEColor.h" />
+    <ClInclude Include="SEDirector.h" />
+    <ClInclude Include="SEEventCustom.h" />
+    <ClInclude Include="SEEventDispatcher.h" />
+    <ClInclude Include="SEEventListener.h" />
+    <ClInclude Include="SEEventListenerAllAtOnce.h" />
+    <ClInclude Include="SEEventListenerCustom.h" />
+    <ClInclude Include="SEEventListenerKeyboard.h" />
+    <ClInclude Include="SEEventListenerKeyboardState.h" />
+    <ClInclude Include="SEEventListenerMouse.h" />
+    <ClInclude Include="SEEventListenerTextInput.h" />
+    <ClInclude Include="SEEventListenerTouchOneByOne.h" />
+    <ClInclude Include="SEFastLayer.h" />
+    <ClInclude Include="SEFastTiledMap.h" />
+    <ClInclude Include="SEFileUtils.h" />
+    <ClInclude Include="SEFiniteTimeAction.h" />
+    <ClInclude Include="SEFont.h" />
+    <ClInclude Include="SEFontCache.h" />
+    <ClInclude Include="SEInputHandler.h" />
+    <ClInclude Include="SELabel.h" />
+    <ClInclude Include="SELabelAtlas.h" />
+    <ClInclude Include="SELabelBMFont.h" />
+    <ClInclude Include="SELabelDotChar.h" />
+    <ClInclude Include="SELabelTTF.h" />
+    <ClInclude Include="SELayer.h" />
+    <ClInclude Include="SELayerColor.h" />
+    <ClInclude Include="SELoadingBar.h" />
+    <ClInclude Include="SEMath.h" />
+    <ClInclude Include="SEMenu.h" />
+    <ClInclude Include="SEMenuItem.h" />
+    <ClInclude Include="SEMusic.h" />
+    <ClInclude Include="SENode.h" />
+    <ClInclude Include="SENotificationCenter.h" />
+    <ClInclude Include="SEObject.h" />
+    <ClInclude Include="SEPlatformMarcos.h" />
+    <ClInclude Include="SEPoint.h" />
+    <ClInclude Include="SEPoolManager.h" />
+    <ClInclude Include="SEProgressTimer.h" />
+    <ClInclude Include="SEProtocols.h" />
+    <ClInclude Include="SERect.h" />
+    <ClInclude Include="SERenderCommand.h" />
+    <ClInclude Include="SERenderer.h" />
+    <ClInclude Include="SEScale9Sprite.h" />
+    <ClInclude Include="SEScene.h" />
+    <ClInclude Include="SEScheduler.h" />
+    <ClInclude Include="SESDLNS.h" />
+    <ClInclude Include="SESDL_gfx_mod.h" />
+    <ClInclude Include="SESize.h" />
+    <ClInclude Include="SESoundManager.h" />
+    <ClInclude Include="SESprite.h" />
+    <ClInclude Include="SESpriteFrame.h" />
+    <ClInclude Include="SESpriteFrameCache.h" />
+    <ClInclude Include="SEStringUtils.h" />
+    <ClInclude Include="SESurface.h" />
+    <ClInclude Include="SETexture.h" />
+    <ClInclude Include="SETextureCache.h" />
+    <ClInclude Include="SETileset.h" />
+    <ClInclude Include="SETMXImageLayer.h" />
+    <ClInclude Include="SETMXLayer.h" />
+    <ClInclude Include="SETMXObjectGroup.h" />
+    <ClInclude Include="SETMXTiledMap.h" />
+    <ClInclude Include="SETouch.h" />
+    <ClInclude Include="SEUserDefault.h" />
+    <ClInclude Include="SEValue.h" />
+    <ClInclude Include="SEVector.h" />
+    <ClInclude Include="SEWindow.h" />
+    <ClInclude Include="ui\UIAbstractCheckButton.h" />
+    <ClInclude Include="ui\UIButton.h" />
+    <ClInclude Include="ui\UICheckBox.h" />
+    <ClInclude Include="ui\UIEditBox.h" />
+    <ClInclude Include="ui\UIRadioButton.h" />
+    <ClInclude Include="ui\UIRadioButtonGroup.h" />
+    <ClInclude Include="ui\UISlider.h" />
+    <ClInclude Include="ui\UIWidget.h" />
+    <ClInclude Include="ui\UIWidgetData.h" />
+    <ClInclude Include="ui\UIWidgetDataSetting.h" />
+    <ClInclude Include="ui\UIWidgetFactory.h" />
+    <ClInclude Include="ui\UIWidgetManager.h" />
+    <ClInclude Include="ui\UIWidgetSystem.h" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
