@@ -1,11 +1,11 @@
-#SDL_Engine
+# SDL_Engine
 
-##1. SDL_Engine的安装和使用
+## 1. SDL_Engine的安装和使用
 >1. 建议使用vs2017
 >2. SDL_Engine依赖于SDL2 SDL2_mixer SDL2_image SDL2_ttf 和zlib，所以在配置的时候需要设置附加包含目录和附加库目录
 >3. SDL_Engine工程会生成一个静态库，所以在开发的时候需要引用到这个库，关于这个库的使用，待更新
 
-##2. SDL_Engine引擎注意事项 SDL 2.07
+## 2. SDL_Engine引擎注意事项 SDL 2.07
 >1. 默认使用了一个窗口(也只有一个窗口)
 >2. SDL使用的只有一个渲染器
 >3. Node删除时最好使用removeFromParent或者removeChild(node,true),因为这样才会清除干净
