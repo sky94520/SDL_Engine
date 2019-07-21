@@ -4,7 +4,7 @@
 >1. 建议使用vs2017
 >2. SDL_Engine依赖于SDL2 SDL2_mixer SDL2_image SDL2_ttf 和zlib，所以在配置的时候需要设置附加包含目录和附加库目录
 >3. SDL_Engine工程会生成一个静态库，所以在开发的时候需要引用到这个库，关于这个库的使用，待更新
-
+>关于SDL_Engine的使用
 ## 2. SDL_Engine引擎注意事项 SDL 2.07
 >1. 默认使用了一个窗口(也只有一个窗口)
 >2. SDL使用的只有一个渲染器
@@ -30,5 +30,5 @@
 >19. SDL_Engine目前已经能很好的支持图片的锚点，旋转，动画等，代价就是会增加一些内存的使用
 >20. TextureCache的线程安全问题暂时没有解决，只是简单更新了下。
 >21. FileUtils isFileExist()是否存在该文件，会尝试打开文件，效率低下。
->22.当前所有的事件监听器优先级默认为0，注意，注意，注意！！！
->23.EventListenerTouchOneByOne类的onTouchBegan()返回值为true表示吞并事件，并且该事件在onTouchMoved()、onTouchEnded()同样有用，不过如果想要真正地吞并事件，还需要调用listener->setSwallowTouches(true)
+>22. 当前所有的事件监听器优先级默认为0，注意，注意，注意！！！
+>23. EventListenerTouchOneByOne类的onTouchBegan()返回值为true表示吞并事件，并且该事件在onTouchMoved()、onTouchEnded()同样有用，不过如果想要真正地吞并事件，还需要调用listener->setSwallowTouches(true)
