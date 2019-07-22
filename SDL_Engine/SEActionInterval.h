@@ -14,7 +14,7 @@ NS_SDL_BEGIN
 class Animation;
 class SpriteFrame;
 
-class ActionInterval:public FiniteTimeAction
+class ActionInterval: public FiniteTimeAction
 {
 protected:
 	//流逝时间
@@ -22,6 +22,8 @@ protected:
 	//是否第一次计算时间
 	bool _bFirstTick;
 public:
+	ActionInterval();
+	virtual ~ActionInterval();
 	inline float getElapsed()const{return _elapsed;}
 	//初始化，设置一个固定时长的动画
 	bool initWithDuration(float d);
@@ -37,7 +39,6 @@ public:
 	//振幅 
 	void setAmplitudeRate(float amp);
 	float getAmplitudeRate()const;
-
 };
 //-----------------------------MoveTo--------------------------------------
 class MoveTo:public ActionInterval

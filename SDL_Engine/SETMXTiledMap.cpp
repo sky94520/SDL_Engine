@@ -359,7 +359,7 @@ void TMXTiledMap::parseImageLayer(rapidxml::xml_node<>*layerRoot)
 		else if (SDL_strcmp("offsety", name) == 0)
 			offsetY = atoi(attribute->value());
 	}
-	layer->setPosition(offsetX, offsetY);
+	layer->setPosition((float)offsetX, (float)offsetY);
 }
 
 void TMXTiledMap::parseProperties(rapidxml::xml_node<>*propRoot)

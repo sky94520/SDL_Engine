@@ -10,6 +10,16 @@
 #include "SEEventDispatcher.h"
 
 NS_SDL_BEGIN
+ActionInterval::ActionInterval()
+	:_elapsed(0.f)
+	,_bFirstTick(true)
+{
+}
+
+ActionInterval::~ActionInterval()
+{
+}
+
 bool ActionInterval::initWithDuration(float d)
 {
 	//记录动画时长
@@ -18,7 +28,7 @@ bool ActionInterval::initWithDuration(float d)
 	if(_duration == 0)
 		_duration = FLT_EPSILON;
 	//时间累和变量为0
-	_elapsed = 0;
+	_elapsed = 0.f;
 	//第一次进行时间间隔计算
 	_bFirstTick = true;
 	return true;
@@ -143,9 +153,13 @@ MoveBy*MoveBy::reverse()const
 }
 //-----------------------------------Animate-----------------------------------------
 Animate::Animate()
-	:_originalFrame(nullptr),_nextFrame(0),_animation(nullptr)
-	,_executedLoops(0),_splitTimes(new std::vector<float>())
+	:_originalFrame(nullptr)
+	,_nextFrame(0)
+	,_animation(nullptr)
+	,_executedLoops(0)
+	,_splitTimes(new std::vector<float>())
 	,_frameDisplayedEvent(nullptr)
+	,_frameDisplayedEventInfo()
 {
 }
 Animate::~Animate()
@@ -718,6 +732,7 @@ Sequence::Sequence()
 	:_split(0.f)
 	,_last(-1)
 {
+	memset(_actions, NULL, sizeof(_actions));
 }
 Sequence::~Sequence()
 {
