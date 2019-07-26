@@ -56,4 +56,26 @@ void TextureCommand::execute(Renderer* renderer)
 	//进行绘制
 	renderer->copyEx(_texture, _srcRect, _destRect, _rotation, _center, _flip);
 }
+//-------------------------------------CustomCommand-------------------------------
+CustomCommand::CustomCommand()
+	:func(nullptr)
+{
+}
+
+CustomCommand::~CustomCommand()
+{
+}
+
+void CustomCommand::init(float globalZOrder)
+{
+	_globalZOrder = globalZOrder;
+}
+
+void CustomCommand::execute(Renderer* renderer)
+{
+	if (func)
+	{
+		func();
+	}
+}
 NS_SDL_END

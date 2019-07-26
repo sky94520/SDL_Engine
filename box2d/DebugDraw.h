@@ -1,17 +1,16 @@
 #ifndef __DebugDraw_H__
 #define __DebugDraw_H__
-#include "../PlatformMarcos.h"
-#include "../Point.h"
-#include "../Director.h"
 
-#include "SDL_gfx.h"
+#include "../SDL_Engine/SEPlatformMarcos.h"
+#include "../SDL_Engine/SERenderCommand.h"
+
 #include "Box2D/Box2D.h"
+#include "SDL2_gfxPrimitives.h"
+
 NS_SDL_BEGIN
+
 class DebugDraw:public b2Draw
 {
-private:
-	Uint8 m_alpha;
-	float m_fPtmRatio;
 public:
 	DebugDraw(uint32 drawFlags,float ptmRatio);
 	~DebugDraw();
@@ -27,6 +26,12 @@ public:
 	virtual void DrawSegment(const b2Vec2& p1, const b2Vec2& p2, const b2Color& color);
 	//绘制b2Transform对象
 	virtual void DrawTransform(const b2Transform& xf);
+	//绘制点
+	virtual void DrawPoint(const b2Vec2& p, float32 size, const b2Color& color);
+private:
+	Uint8 m_alpha;
+	float m_fPtmRatio;
+	CustomCommand _command;
 };
 NS_SDL_END
 #endif

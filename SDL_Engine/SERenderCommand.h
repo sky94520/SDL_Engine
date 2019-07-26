@@ -1,5 +1,7 @@
 #ifndef __SDL_RenderCommand_H__
 #define __SDL_RenderCommand_H__
+#include <functional>
+
 #include "SDL.h"
 
 #include "SERect.h"
@@ -45,6 +47,18 @@ public:
 	void setColorMod(const Color3B& colorMod) { _colorMod = colorMod; }
 
 	virtual void execute(Renderer* renderer);
+};
+//-------------------------------------CustomCommand-------------------------------
+class CustomCommand : public RenderCommand
+{
+public:
+	CustomCommand();
+	~CustomCommand();
+	void init(float globalZOrder);
+
+	virtual void execute(Renderer* renderer);
+
+	std::function<void()> func;
 };
 NS_SDL_END
 #endif

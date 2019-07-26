@@ -1,10 +1,13 @@
 #ifndef __SDL_PhysicalDrawNode_H__
 #define __SDL_PhysicalDrawNode_H__
-#include "../Node.h"
+
+#include "../SDL_Engine/SENode.h"
+
 #include "Box2D/Box2D.h"
 
 NS_SDL_BEGIN
 class DebugDraw;
+
 class PhysicalDrawNode:public Node
 {
 private:
@@ -13,6 +16,7 @@ private:
 public:
 	PhysicalDrawNode();
 	~PhysicalDrawNode();
+
 	static PhysicalDrawNode*create(b2World*pWorld,float ptmRatio);
 	bool init(b2World*pWorld,float ptmRatio);
 public:
