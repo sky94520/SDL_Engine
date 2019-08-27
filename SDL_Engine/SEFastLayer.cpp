@@ -208,7 +208,7 @@ bool FastLayer::initCarmark()
 	_extraSize = tileSize * 2;
 
 	//缓冲区要稍微比屏幕的尺寸大一些，并且能被tileSize整除
-	Size visibleSize = Director::getInstance()->getVisibleSize();
+	Size visibleSize = this->getVisibleSize();
 	int temp = 0;
 	while (temp < visibleSize.width)
 		temp += _tileWidth;
@@ -222,7 +222,6 @@ bool FastLayer::initCarmark()
 	//缓冲区图块个数
 	_bufferRowTileNum = _bufferWidth / (int)tileSize.width;
 	_bufferColTileNum = _bufferHeight / (int)tileSize.height;
-
 
 	//地图变量初始化
 	_deltaWidth = int(_width * _tileWidth - visibleSize.width);
@@ -250,7 +249,7 @@ void FastLayer::initBuffer()
 	renderer->setDrawColor(Color4B(0,0,0,0));
 	renderer->clear();
 
-	auto visibleSize = Director::getInstance()->getVisibleSize();
+	auto visibleSize = this->getVisibleSize();
 	//绘制小的那个
 	int endX = _width > _bufferRowTileNum ? _bufferRowTileNum : _width;
 	int endY = _height > _bufferColTileNum ? _bufferColTileNum : _height;
@@ -270,7 +269,7 @@ void FastLayer::initBuffer()
 
 void FastLayer::fastDraw(int x, int y)
 {
-	auto visibleSize = Director::getInstance()->getVisibleSize();
+	auto visibleSize = this->getVisibleSize();
 	int visibleWidth = (int)visibleSize.width;
 	int visibleHeight = (int)visibleSize.height;
 
@@ -300,7 +299,7 @@ void FastLayer::drawRegion(int srcX, int srcY, int width, int height, int destX,
 	if (width <= 0 || height <= 0)
 		return;
 
-	auto visibleSize = Director::getInstance()->getVisibleSize();
+	auto visibleSize = this->getVisibleSize();
 	int visibleWidth = (int)visibleSize.width;
 	int visibleHeight = (int)visibleSize.height;
 	//超出屏幕检测
@@ -609,5 +608,11 @@ void FastLayer::uncompression(const std::string&compression,const std::string&de
 void FastLayer::setTiledMap(FastTiledMap*tiledMap)
 {
 	_tiledMap = tiledMap;
+}
+
+Size FastLayer::getVisibleSize() const
+{
+	Size visibleSize = Director::getInstance()->getVisibleSize();
+	return Size(visibleSize.width + _tileWidth, visibleSize.height + _tileHeight);
 }
 NS_SDL_END

@@ -80,6 +80,7 @@ private:
 	std::string decode(const std::string&encoding,const std::string&str);
 	void uncompression(const std::string&compression,const std::string&decodeIDs);
 	void setTiledMap(FastTiledMap* tiledMap);
+	Size getVisibleSize() const;
 private:
 	friend class FastTiledMap;
 private:
