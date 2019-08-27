@@ -91,19 +91,22 @@ bool FastLayer::init(rapidxml::xml_node<>*root)
 
 void FastLayer::draw()
 {
-	//this->fastDraw(-_otherPosX, -_otherPosY);
-	this->fastDraw(0, 0);
-
 	//转换成世界坐标
 	Point position = this->convertToWorldSpace(_position);
-
-	if (position.equals(_lastPosition))
+	//只有坐标发生变化时才尝试重新绘制
+	if (position.equals(_lastPosition)) {
+		this->fastDraw(0, 0);
 		return;
+	}
 	//获取变化率
 	float dx = _lastPosition.x - position.x;
 	float dy = _lastPosition.y - position.y;
 	_lastPosition = position;
+	//部分偏移映射到地图上
+	this->fastDraw(-dx, -dy);
 
+	//TODO: 用处在哪???
+	/*
 	bool exit = false;
 	if (_otherPosX != 0 && dx != 0)
 	{
@@ -117,6 +120,7 @@ void FastLayer::draw()
 	}
 	if (exit)
 		return;
+	*/
 	//是否移动成功
 	bool ret = this->scroll(dx, dy);
 	if (!ret)
@@ -347,12 +351,12 @@ bool FastLayer::scroll(float x, float y)
 		return false;
 
 	//缓冲区的偏移
-	if (x > _deltaWidth)
+	if (x >= _deltaWidth)
 	{
 		_mapOffsetX = (float)_deltaWidth;
 		return false;
 	}
-	if (y > _deltaHeight)
+	if (y >= _deltaHeight)
 	{
 		_mapOffsetY = (float)_deltaHeight;
 		return false;
@@ -377,6 +381,7 @@ void FastLayer::updateBuffer(float x, float y)
 			copyBufferX(indexMapLastX, getIndexCarmarkY(),
 				getCarTileColNum(),
 				getBufferCarmarkX(), getBufferCarmarkY());
+
 			_carmarkX += _tileWidth;
 		}
 	}
