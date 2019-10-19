@@ -32,3 +32,6 @@
 >21. FileUtils isFileExist()是否存在该文件，会尝试打开文件，效率低下。
 >22. 当前所有的事件监听器优先级默认为0，注意，注意，注意！！！
 >23. EventListenerTouchOneByOne类的onTouchBegan()返回值为true表示吞并事件，并且该事件在onTouchMoved()、onTouchEnded()同样有用，不过如果想要真正地吞并事件，还需要调用listener->setSwallowTouches(true)
+
+## 待办事项
+>1. UI工厂实现类似于JSP动态生成的功能
