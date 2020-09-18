@@ -136,8 +136,7 @@ void TMXLayer::setTileGID(int gid, const Point& pos)
 	}
 	else
 	{
-		//暂时不支持
-		//新建texture
+		//TODO:暂时不支持新建texture
 		if(oldGid == 0)
 		{
 			SDL_assert(1 == 0);
