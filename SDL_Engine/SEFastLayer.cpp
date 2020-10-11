@@ -99,19 +99,19 @@ void FastLayer::draw()
 		return;
 	}
 	//获取变化率
-	int dx = int(_lastPosition.x - position.x);
-	int dy = int(_lastPosition.y - position.y);
+	float dx = _lastPosition.x - position.x;
+	float dy = _lastPosition.y - position.y;
 	_lastPosition = position;
 	
 	this->fastDraw(-_otherPosX - dx, -_otherPosY - dy);
-
+	
 	bool exit = false;
-	if (_otherPosX != 0 && dx != 0)
+	if (_otherPosX != 0 && !IS_FLOAT_ZERO(dx))
 	{
 		_otherPosX += dx;
 		exit = true;
 	}
-	if (_otherPosY != 0 && dy != 0)
+	if (_otherPosY != 0 && !IS_FLOAT_ZERO(dy))
 	{
 		_otherPosY += dy;
 		exit = true;

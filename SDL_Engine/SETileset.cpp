@@ -148,8 +148,17 @@ void Tileset::parseProperties(int id,rapidxml::xml_node<>*root)
 	{
 		auto key = node->first_attribute("name")->value();
 		auto value = node->first_attribute("value")->value();
+		auto type = node->first_attribute("type")->value();
 
-		valueMap.insert(std::make_pair(key,Value(value)));
+		//TODO:根据类型更改值
+		Value datum(value);
+		if (strcmp(type, "bool") == 0)
+			datum = (value == "true" ? true : false);
+		else if (strcmp(type, "int") == 0)
+			datum = atoi(value);
+		else if (strcmp(type, "float") == 0)
+			datum = atof(value);
+		valueMap.insert(std::make_pair(key,datum));
 	}
 	_properties.insert(std::make_pair(id,valueMap));
 }

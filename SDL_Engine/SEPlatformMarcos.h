@@ -4,12 +4,15 @@
 #include<assert.h>
 #include<functional>
 #include<cstdio>
+#include <cfloat>
 
 #define LOG(format, ...) \
 	do{ 		\
 		printf("FILE:%s,LINE:%d\n", __FILE__, __LINE__);\
 		printf((format), ##__VA_ARGS__);	\
 	}while(0)
+
+#define IS_FLOAT_ZERO(number) ((number) > -FLT_EPSILON && (number) < FLT_EPSILON)
 
 #define NS_SDL_BEGIN namespace SDL{
 #define NS_SDL_END }
