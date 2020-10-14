@@ -34,8 +34,7 @@ public:
 	void removeSpriteFrameByName(const std::string&name);
 	//释放某一文件中的全部资源
 	void removeSpriteFramesByFileName(const std::string&filePath);
-private:
-	bool addSpriteFramesWithFile(rapidxml::xml_node<>*root,Texture*texture);
+
 	/**创建一个texture的小图，并且该图片的blendmode必须为SDL_BLENDMODE_BLEND
 	*brief texture 精灵图
 	*brief srcRect 在精灵图中的包围盒
@@ -43,7 +42,9 @@ private:
 	*brief originalSize 原图大小
 	*brief rotated 是否旋转
 	*/
-	Texture*createTexture(Texture*texture,const Rect&srcRect,const Point&offset,const Size&originalSize,bool rotated);
+	static Texture* createTexture(Texture*texture,const Rect&srcRect,const Point&offset,const Size&originalSize,bool rotated);
+private:
+	bool addSpriteFramesWithFile(rapidxml::xml_node<>*root,Texture*texture);
 };
 NS_SDL_END
 #endif

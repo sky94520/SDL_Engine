@@ -80,7 +80,6 @@ private:
 	std::string decode(const std::string&encoding,const std::string&str);
 	void uncompression(const std::string&compression,const std::string&decodeIDs);
 	void setTiledMap(FastTiledMap* tiledMap);
-	Size getVisibleSize() const;
 private:
 	friend class FastTiledMap;
 private:
@@ -92,7 +91,6 @@ private:
 	int _height;
 	int _offsetX;
 	int _offsetY;
-
 	//保存对tiled map的引用
 	FastTiledMap* _tiledMap;
 	ValueMap _properties;

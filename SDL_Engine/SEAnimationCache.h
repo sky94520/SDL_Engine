@@ -8,6 +8,7 @@
 #include "SEValue.h"
 
 NS_SDL_BEGIN
+
 class Animation;
 
 class AnimationCache:public Object
@@ -38,6 +39,10 @@ public:
 	一定得确保frames已经由SpriteFrameCache加载
 	*/
 	void addAnimationsWithFile(const std::string&plist);
+	/**根据GIF文件添加动画
+	@param gif gif文件路径
+	*/
+	void addAnimationWithGIF(const std::string& gif, const std::string& name, bool restoreOriginalFrame=true, int loops=-1);
 	/**根据键值对添加Animation
 	@param valueMap 要添加的键值对
 	@param plist 

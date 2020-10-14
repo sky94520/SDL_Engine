@@ -10,27 +10,26 @@
 NS_SDL_BEGIN
 
 FastLayer::FastLayer()
-	:_layerName("")
-	, _width(0)
-	, _height(0)
-	, _offsetX(0)
-	, _offsetY(0)
-	, _tiledMap(nullptr)
-	, _bufferWidth(0)
-	, _bufferHeight(0)
-	, _tileWidth(0)
-	, _tileHeight(0)
-	, _extraSize(0)
-	, _buffer(nullptr)
-	, _deltaWidth(0)
-	, _deltaHeight(0)
-	, _mapOffsetX(0)
-	, _mapOffsetY(0)
-	, _carmarkX(0)
-	, _carmarkY(0)
-	, _cmdIndex(0)
-	, _otherPosX(0)
-	, _otherPosY(0)
+	:_width(0)
+	,_height(0)
+	,_offsetX(0)
+	,_offsetY(0)
+	,_tiledMap(nullptr)
+	,_bufferWidth(0)
+	,_bufferHeight(0)
+	,_tileWidth(0)
+	,_tileHeight(0)
+	,_extraSize(0)
+	,_buffer(nullptr)
+	,_deltaWidth(0)
+	,_deltaHeight(0)
+	,_mapOffsetX(0)
+	,_mapOffsetY(0)
+	,_carmarkX(0)
+	,_carmarkY(0)
+	,_cmdIndex(0)
+	,_otherPosX(0)
+	,_otherPosY(0)
 {
 }
 
@@ -70,7 +69,7 @@ bool FastLayer::init(rapidxml::xml_node<>* root)
 		else if (sName == "offsety")
 			_offsetY = atoi(value);
 		else if (sName == "visible")
-			visible = atoi(value) != 0;
+			visible = (atoi(value) != 0);
 	}
 
 	this->setName(_layerName);
@@ -91,7 +90,7 @@ bool FastLayer::init(rapidxml::xml_node<>* root)
 void FastLayer::draw()
 {
 	//获取尝试转换世界坐标
-	auto position = this->convertToWorldSpace(_position);
+	Point position = this->convertToWorldSpace(_position);
 
 	if (position.equals(_lastPosition))
 	{

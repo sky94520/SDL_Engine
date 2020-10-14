@@ -343,8 +343,8 @@ void Sprite::draw()
 	{
 		flip = SDL_FLIP_VERTICAL;
 	}
-	SDL_Rect srcRect = {(int)_rect.origin.x,(int)_rect.origin.y,(int)_rect.size.width,(int)_rect.size.height};
-	SDL_Rect destRect = {int(pos.x),int(pos.y),int(_rect.size.width * scaleX),int(_rect.size.height * scaleY)};
+	SDL_Rect srcRect = { (int)_rect.origin.x,(int)_rect.origin.y,(int)_rect.size.width,(int)_rect.size.height };
+	SDL_Rect destRect = { int(pos.x),int(pos.y),int(_rect.size.width * scaleX),int(_rect.size.height * scaleY) };
 	
 	destRect.x -= int(_anchorPoint.x * _originalSize.width * scaleX);
 	destRect.y -= int(_anchorPoint.y * _originalSize.height * scaleY);

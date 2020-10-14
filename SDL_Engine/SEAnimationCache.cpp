@@ -5,6 +5,11 @@
 #include "SESpriteFrameCache.h"
 #include "SEAnimationFrame.h"
 
+#include "SETexture.h"
+#include "SESurface.h"
+#include "SESpriteFrame.h"
+#include "extensions/SDL_anigif.h"
+
 NS_SDL_BEGIN
 AnimationCache*AnimationCache::m_pInstance = nullptr;
 
@@ -76,6 +81,47 @@ void AnimationCache::addAnimationsWithFile(const std::string&filename)
 
 	this->addAnimationsWithValueMap(valueMap,filename);
 }
+
+void AnimationCache::addAnimationWithGIF(const std::string& gif, const std::string& name, bool restoreOriginalFrame, int loops)
+{
+	std::string fullname = FileUtils::getInstance()->fullPathForFilename(gif);
+	if(fullname.empty())
+	{
+		LOG("the filename is empty,AnimationCache::addAnimationsWithGIF\n");
+		return ;
+	}
+	//先获取gif的长度
+	int length = AG_LoadGIF(fullname.c_str(), nullptr, 0);
+	AG_Frame* ag_frames = new AG_Frame[length];
+	AG_LoadGIF(fullname.c_str(), ag_frames, length);
+	//构建帧
+	std::vector<AnimationFrame*> frames(length);
+	Renderer* renderer = Director::getInstance()->getRenderer();
+	Size originalSize;
+	for (int i = 0; i < length; i++)
+	{
+		//渲染
+		Surface* surface = Surface::create(ag_frames[i].surface);
+		Texture* texture = Texture::createWithSurface(renderer, surface);
+		Size size(ag_frames[i].surface->w, ag_frames[i].surface->h);
+		if (i == 0)
+			originalSize = size;
+		Point offset(ag_frames[i].x, ag_frames[i].y);
+		texture = SpriteFrameCache::createTexture(texture, Rect(Point::ZERO, size), offset, originalSize, false);
+
+		SpriteFrame* frame = SpriteFrame::createWithTexture(texture, Rect(Point::ZERO, originalSize));
+
+		float delayUnits = ag_frames[i].delay / 1000.f;
+		AnimationFrame* animationFrame = AnimationFrame::create(frame, delayUnits);
+		frames[i] = animationFrame;
+	}
+	//创建动画
+	Animation* animation = Animation::createWithAnimationFrames(frames, loops);
+	animation->setRestoreOriginalFrame(restoreOriginalFrame);
+	this->addAnimation(animation, name);
+	delete[] ag_frames;
+}
+
 void AnimationCache::addAnimationsWithValueMap(const ValueMap&valueMap,const std::string&filename)
 {
 	//确保valueMap内有值

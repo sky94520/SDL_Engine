@@ -78,6 +78,7 @@
       <ConformanceMode>false</ConformanceMode>
       <AdditionalIncludeDirectories>..\local\include;..\zlib\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Lib>
       <AdditionalLibraryDirectories>..\local\lib\x86;..\zlib\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
@@ -123,6 +124,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="base64.cpp" />
+    <ClCompile Include="extensions\SDL_anigif.c" />
     <ClCompile Include="extensions\SDL_PxString.cpp" />
     <ClCompile Include="SEAction.cpp" />
     <ClCompile Include="SEActionEase.cpp" />
@@ -208,6 +210,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="base64.h" />
+    <ClInclude Include="extensions\SDL_anigif.h" />
     <ClInclude Include="extensions\SDL_PxString.h" />
     <ClInclude Include="SEAction.h" />
     <ClInclude Include="SEActionEase.h" />

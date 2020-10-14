@@ -261,6 +261,9 @@
     <ClCompile Include="ui\UIWidgetSystem.cpp">
       <Filter>SDL_Engine\ui</Filter>
     </ClCompile>
+    <ClCompile Include="extensions\SDL_anigif.c">
+      <Filter>SDL_Engine\extensions</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="base64.h">
@@ -538,6 +541,9 @@
     </ClInclude>
     <ClInclude Include="ui\UIWidgetSystem.h">
       <Filter>SDL_Engine\ui</Filter>
+    </ClInclude>
+    <ClInclude Include="extensions\SDL_anigif.h">
+      <Filter>SDL_Engine\extensions</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
